@@ -1,0 +1,8 @@
+oi, [nome]! tudo bem por aí?
+
+a fatura de [mês] do site chegou: R$ [valor], com vencimento em [dia].
+[link do boleto ou chave pix]
+
+e se tiver qualquer coisa que você queira mudar no site, é só mandar por aqui: horário, preço, foto nova, um serviço que entrou ou saiu. a gente ajusta.
+
+obrigado por seguir com a obliq.
