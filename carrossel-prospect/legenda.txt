@@ -1,19 +1,22 @@
 você pede. ele prospecta.
 
-o prospect é o agente de vendas de quem vende landing page. você pede em português, ele busca os negócios no google maps, dá uma nota pra cada um, escreve a abertura e manda pelo whatsapp, uma por vez, no ritmo de uma pessoa. quando alguém responde, o gancho já está pronto.
+o obliq prospect é um agente pessoal de vendas pra quem vende landing page. você pede do seu jeito, ele busca os negócios no Google Maps, dá nota para cada um, escreve a primeira mensagem e envia uma por vez, no ritmo de uma pessoa. quem responde recebe o gancho; preço, reunião e fechamento voltam para você.
 
 roda no seu computador, e você acompanha pelo celular.
 
 os planos:
 grátis, R$ 0: 1 busca por dia, 30 mensagens da IA, envio manual.
-no seu computador, R$ 49/mês: a IA vem incluída, até 1.000 leads por mês, e agentes e whatsapps no seu PC, quantos quiser. prefere a sua IA? usa o codex ou a sua chave.
+no seu computador, R$ 49/mês: IA incluída, até 1.000 leads por mês, e agentes e WhatsApps no seu PC, quantos quiser. prefere a sua IA? use o Codex ou a sua chave.
 anual: 10× o mensal, dois meses de graça.
 lançamento: R$ 39/mês pra sempre, para os 10 primeiros.
 
-em breve: o agente na nuvem, 24 horas. o primeiro é grátis, e cada um a mais, com 1 whatsapp, sai R$ 29/mês. e o prospect pra quem vende micro-SaaS.
+em breve: o agente na nuvem, 24 horas. o primeiro é grátis; cada um a mais, com 1 WhatsApp, R$ 29/mês. e o prospect pra quem vende micro-SaaS.
 
-testa agora, no plano grátis. no powershell do windows:
+testa agora, no plano grátis. no PowerShell do Windows:
 irm https://prospect.obliqstudios.com.br/instalar | iex
-ou no navegador: prospect.obliqstudios.com.br
 
-#obliqstudios #criacaodesites #landingpage #prospeccao #webdesign
+prospect.obliqstudios.com.br
+
+as telas do carrossel usam dados de exemplo.
+
+#obliq #obliqprospect #prospeccao #prospeccaodeclientes #landingpage #vendas
