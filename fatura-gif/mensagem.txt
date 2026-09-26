@@ -1,24 +1,8 @@
-mensagem da fatura (whatsapp)
-
-mande o gif primeiro, depois as bolhas abaixo, uma por mensagem.
-troque o que está entre colchetes. apague a bolha 4 se não tiver sugestão específica pra esse cliente.
-
----
-
-bolha 1
 oi, [nome]! tudo bem por aí?
 
-bolha 2
 a fatura de [mês] do site chegou: R$ [valor], com vencimento em [dia].
-
-bolha 3
 [link do boleto ou chave pix]
 
-bolha 4 (opcional: uma sugestão específica pra esse site)
-passando pelo site essa semana, pensei numa coisa: [sugestão, ex.: colocar as fotos novas do cardápio / atualizar o horário de fim de ano / destacar o serviço novo].
+passando pelo site essa semana, pensei numa coisa: [sugestão, ex.: colocar as fotos novas do cardápio]. se tiver qualquer outra coisa que você queira mudar, é só mandar por aqui: horário, preço, foto nova, um serviço que entrou ou saiu. a gente ajusta.
 
-bolha 5
-e se tiver qualquer coisa que você queira mudar no site, é só mandar por aqui: horário, preço, foto nova, um serviço que entrou ou saiu. a gente ajusta.
-
-bolha 6
 obrigado por seguir com a obliq.
