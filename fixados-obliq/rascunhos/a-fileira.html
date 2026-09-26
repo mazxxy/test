@@ -1,0 +1,32 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><link rel="stylesheet" href="../fontes/fontes.css"><link rel="stylesheet" href="base.css"><title>Rascunho A</title>
+<style>
+.nome { text-align: center; width: 300px; }
+.nome b { display: block; font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: 'SOFT' 55, 'opsz' 40; font-size: 46px; line-height: 1; }
+.nome span { display: block; margin-top: 8px; font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-variation-settings: 'SOFT' 70, 'opsz' 18; font-size: 32px; line-height: 1; }
+.seu { border-radius: 22.4%; display: grid; place-items: center; font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-variation-settings: 'SOFT' 70, 'opsz' 80; font-size: 96px; color: var(--tinta-2); }
+</style></head><body>
+<!-- Rascunho A: a fileira de apps. Os oito sistemas como ícones grandes, três por post, e o nono
+     espaço tracejado para o sistema de quem está vendo. -->
+<div id="folha">
+  <p class="t" style="left:70px;top:110px;font-size:200px">sistemas</p>
+  <p class="t" style="left:1150px;top:110px;font-size:200px">sob medida</p>
+  <p class="marca" style="left:2230px;top:110px;font-size:200px">obliq<i>.</i></p>
+</div>
+<script src="../lib/ponto.js"></script><script src="base.js"></script>
+<script>
+const folha = document.getElementById('folha'), S = 280;
+const xs = [0, 1, 2].flatMap((p) => [-330, 0, 330].map((d) => p * 1080 + 540 + d));
+SISTEMAS.forEach((i, k) => {
+  icone(S, i, xs[k] - S / 2, 470);
+  const n = document.createElement('p'); n.className = 'nome'; n.style.cssText = `left:${xs[k] - 150}px;top:${470 + S + 36}px`;
+  n.innerHTML = `<b>${i.nome}</b>` + (i.q ? `<span style="color:${i.txt}">${i.q}</span>` : '');
+  folha.appendChild(n);
+});
+const seu = document.createElement('div'); seu.className = 'seu';
+seu.style.cssText = `left:${xs[8] - S / 2}px;top:470px;width:${S}px;height:${S}px;border:4px dashed #8A867D`;
+seu.textContent = 'o seu'; folha.appendChild(seu);
+const n = document.createElement('p'); n.className = 'nome'; n.style.cssText = `left:${xs[8] - 150}px;top:${470 + S + 36}px`;
+n.innerHTML = '<b>o próximo</b>'; folha.appendChild(n);
+pontos();
+document.fonts.ready.then(() => document.body.dataset.pronto = '1');
+</script></body></html>

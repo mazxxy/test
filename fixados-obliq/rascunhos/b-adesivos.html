@@ -1,0 +1,26 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><link rel="stylesheet" href="../fontes/fontes.css"><link rel="stylesheet" href="base.css"><title>Rascunho B</title>
+<style>
+.ades { background: #FFFFFF; border-radius: 14px; padding: 34px 46px 38px; box-shadow: 0 2px 4px rgba(27,24,20,.06), 0 30px 60px -28px rgba(27,24,20,.45); white-space: nowrap; transform-origin: center; display: flex; align-items: center; gap: 30px; }
+.ades b { font-family: 'Fraunces', serif; font-weight: 700; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 120px; line-height: 1; }
+.ades i { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-variation-settings: 'SOFT' 70, 'opsz' 80; font-size: 84px; line-height: 1; }
+</style></head><body>
+<!-- Rascunho B: os adesivos. O nome de cada sistema, na fonte da marca e com o qualificador na tinta do
+     produto, colado torto e atravessando as emendas. -->
+<div id="folha">
+  <p class="marca" style="left:2560px;top:1130px;font-size:170px">obliq<i>.</i></p>
+</div>
+<script src="../lib/ponto.js"></script><script src="base.js"></script>
+<script>
+const folha = document.getElementById('folha');
+const POS = [[80, 110, -4], [760, 470, 3], [110, 860, -2], [1330, 120, 2], [1480, 880, -3], [1900, 470, 4], [2420, 110, -3], [2280, 780, 2]];
+SISTEMAS.forEach((i, k) => {
+  const d = document.createElement('div'); d.className = 'ades';
+  const [x, y, r] = POS[k];
+  d.style.cssText = `left:${x}px;top:${y}px;transform:rotate(${r}deg)`;
+  d.innerHTML = `<b>${i.nome}</b>` + (i.q ? `<i style="color:${i.txt}">${i.q}</i>` : '');
+  if (i.ponto) d.innerHTML += '<span class="ponto-fixo" data-pose="parado" data-q="0" data-escala="6"></span>';
+  folha.appendChild(d);
+});
+pontos();
+document.fonts.ready.then(() => document.body.dataset.pronto = '1');
+</script></body></html>

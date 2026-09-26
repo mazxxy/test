@@ -1,0 +1,22 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><link rel="stylesheet" href="../fontes/fontes.css"><link rel="stylesheet" href="base.css"><title>Rascunho C</title>
+<style></style></head><body>
+<!-- Rascunho C: sistema de verdade. As telas reais do Prospect (dados de exemplo) em colagem grande,
+     atravessando as emendas, e a família de ícones embaixo. -->
+<div id="folha">
+  <p class="t" style="left:70px;top:100px;font-size:200px">sistema</p>
+  <p class="t" style="left:2270px;top:100px;font-size:200px"><i>de verdade.</i></p>
+  <div class="impresso" style="left:120px;top:420px;transform:rotate(-3deg)"><img src="lead-ipe.png" style="width:760px"></div>
+  <div class="impresso" style="left:170px;top:600px;transform:rotate(2deg)"><img src="lead-sabia.png" style="width:760px"></div>
+  <div class="impresso" style="left:100px;top:780px;transform:rotate(-1deg)"><img src="lead-aroeira.png" style="width:760px"></div>
+  <div class="impresso" style="left:860px;top:300px;transform:rotate(-4deg)"><img src="janela-pc.png" style="width:760px"></div>
+  <div class="impresso" style="left:1930px;top:250px;transform:rotate(5deg);background:#1B1814;border-radius:44px;padding:11px"><img src="celular-modo-autonomo.png" style="width:410px;border-radius:36px"></div>
+  <p class="marca" style="left:2560px;top:1150px;font-size:150px">obliq<i>.</i></p>
+  <p style="left:120px;top:1260px;font:500 26px/1 'Hanken Grotesk';color:#5A564D">prospect. dados de exemplo.</p>
+</div>
+<script src="../lib/ponto.js"></script><script src="base.js"></script>
+<script>
+const S = 150;
+SISTEMAS.forEach((i, k) => icone(S, i, 2420 + (k % 4) * 185, 470 + Math.floor(k / 4) * 190, 0));
+pontos();
+document.fonts.ready.then(() => document.body.dataset.pronto = '1');
+</script></body></html>

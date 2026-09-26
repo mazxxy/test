@@ -1,0 +1,24 @@
+/* base comum dos rascunhos dos fixados: papel, tipos, Ponto e ícones da família (guideline §2b) */
+:root { --papel-base: #FDFBF5; --tinta: #1B1814; --tinta-2: #5A564D; --azul: #2946D8; --fraunces: 'SOFT' 55, 'opsz' 80; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { width: 3240px; background: #D9D4C8; }
+#folha { position: relative; width: 3240px; height: 1350px; overflow: hidden; color: var(--tinta);
+  background: url('../lib/papel.svg') 0 0 / 1080px 1350px repeat-x, var(--papel-base);
+  font-family: 'Hanken Grotesk', sans-serif; -webkit-font-smoothing: antialiased; }
+#folha > * { position: absolute; }
+.t { font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; line-height: 1; white-space: nowrap; }
+.t i { font-style: italic; color: var(--azul); }
+.marca { font-family: 'Fraunces', serif; font-weight: 700; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; line-height: 1; }
+.marca i { font-style: normal; color: var(--azul); }
+.ponto-fixo { line-height: 0; } .ponto-fixo svg { display: block; shape-rendering: crispEdges; }
+.pt-b { fill: var(--azul); } .pt-s { fill: #1E33A8; } .pt-k { fill: var(--tinta); } .pt-g { fill: var(--tinta-2); } .pt-l { fill: #93A8FF; }
+.ponto-papel .pt-b, .ponto-papel .pt-s, .ponto-papel .pt-k, .ponto-papel .pt-g, .ponto-papel .pt-l { fill: #FAF7F0; }
+.ic { --s: 176px; width: var(--s); height: var(--s); border-radius: 22.4%; display: grid; place-items: center; box-shadow: 0 2px 4px rgba(27,24,20,.08), 0 30px 50px -26px rgba(27,24,20,.5); }
+.ic span { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-variation-settings: 'SOFT' 70, 'opsz' 80; letter-spacing: -0.02em; line-height: 1; font-size: calc(var(--s) * .636); transform: translateY(calc(var(--s) * -.034)); }
+.ic.x span { transform: translateY(calc(var(--s) * -.08)); }
+.ic.epi { position: relative; } .ic.epi span { font-size: calc(var(--s) * .477); transform: translateY(calc(var(--s) * -.09)); }
+.ic.epi::after { content: ''; position: absolute; left: 32%; right: 32%; bottom: 20.5%; height: 2.8%; border-radius: 3px; background: #FAF7F0; }
+.ic.adega { box-shadow: inset 0 0 0 calc(var(--s) * .068) #1B1814, 0 30px 50px -26px rgba(27,24,20,.5); }
+.ic.adega span { font-size: calc(var(--s) * .52); }
+.impresso { background: #fff; padding: 9px; border-radius: 8px; box-shadow: 0 2px 4px rgba(27,24,20,.06), 0 30px 60px -28px rgba(27,24,20,.45); }
+.impresso img { display: block; border-radius: 4px; }
