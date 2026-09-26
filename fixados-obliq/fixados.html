@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=3240">
+<title>Fixados obliq</title>
+<!--
+  Os 3 posts fixados do perfil da obliq: uma folha de 3240 x 1350 cortada em três posts de 1080 x 1350.
+  No grade do perfil o Instagram mostra cada post em 3:4, cortando 34 px de cada lado: o que importa
+  fica longe das emendas (x 1046 a 1114 e 2126 a 2194). Publicar na ordem 3, 2, 1.
+
+  O foco é sistema. O texto vem do jardim do site (o que a gente planta, o que custa, o próximo broto),
+  e as oito plantas são os oito sistemas da casa, cada flor na tinta do produto (guideline §2b, §5e).
+  Azul em três lugares: "negócio pequeno.", o carimbo e a flor do Prospect. O ponto do "obliq." não conta.
+-->
+<link rel="stylesheet" href="fontes/fontes.css">
+<style>
+:root {
+  --papel-base: #FDFBF5; --tinta: #1B1814; --tinta-2: #5A564D; --azul: #2946D8;
+  --fraunces: 'SOFT' 55, 'opsz' 80;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #D9D4C8; }
+body { width: 3240px; }
+#folha {
+  position: relative; width: 3240px; height: 1350px; overflow: hidden; color: var(--tinta);
+  background: url('lib/papel.svg') 0 0 / 1080px 1350px repeat-x, var(--papel-base);
+  font-family: 'Hanken Grotesk', sans-serif; -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision;
+}
+#folha > * { position: absolute; }
+canvas#jardim { left: 0; top: 0; width: 3240px; height: 1350px; pointer-events: none; }
+
+.t { font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; line-height: 1; }
+.t i { font-style: italic; color: var(--azul); }
+.olho { font: 700 22px/1 'Hanken Grotesk'; letter-spacing: .22em; text-transform: uppercase; color: var(--tinta-2); }
+.corpo { font-size: 36px; line-height: 50px; }
+.nota { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-variation-settings: 'SOFT' 55, 'opsz' 18; font-size: 36px; color: var(--tinta-2); transform: rotate(-2.2deg); transform-origin: left top; }
+
+#olho { left: 86px; top: 104px; }
+#folha > .m { font-size: 200px; white-space: nowrap; }
+#oito { left: 1160px; top: 440px; font: 500 30px/1 'Hanken Grotesk'; color: var(--tinta-2); display: flex; align-items: center; gap: 22px; }
+#caixas { display: inline-block; width: 420px; height: 44px; }
+#diz1 { left: 86px; top: 830px; width: 900px; }
+#diz2 { left: 1190px; top: 830px; width: 880px; }
+
+#carimbo { left: 2742px; top: 118px; width: 330px; transform: rotate(-6deg); opacity: .78; mix-blend-mode: multiply; }
+#dois { left: 2250px; top: 170px; width: 430px; color: var(--tinta-2); }
+#marca { left: 2240px; top: 420px; font-family: 'Fraunces', serif; font-weight: 700; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 260px; line-height: 1; }
+#marca i { font-style: normal; color: var(--azul); }
+#chama { left: 2250px; top: 740px; width: 860px; }
+#chama b { font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 1.06em; }
+#broto { left: 2790px; top: 986px; }
+
+/* os nomes embaixo de cada planta, como no jardim do site */
+.nome { top: 1262px; transform: translateX(-50%); text-align: center; white-space: nowrap; }
+.nome b { display: block; font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: 'SOFT' 55, 'opsz' 40; font-size: 32px; line-height: 1; }
+.nome span { display: block; margin-top: 4px; font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-variation-settings: 'SOFT' 70, 'opsz' 18; font-size: 22px; line-height: 1; }
+</style>
+</head>
+<body>
+<div id="folha">
+  <canvas id="jardim"></canvas>
+
+  <!-- post 1 e 2: a manchete atravessa -->
+  <p class="olho" id="olho">estúdio de sistemas · feito por dois</p>
+  <!-- cada palavra no seu lugar: as emendas dos posts caem nos espaços entre as palavras -->
+  <p class="t m" style="left:80px;top:168px">sistema</p>
+  <p class="t m" style="left:1150px;top:168px">próprio,</p>
+  <p class="t m" style="left:80px;top:368px">no preço de</p>
+  <p class="t m" style="left:80px;top:568px"><i>negócio</i></p>
+  <p class="t m" style="left:1150px;top:568px"><i>pequeno.</i></p>
+  <p class="t8" id="oito"><span id="caixas"></span>8 sistemas, 6 no ar.</p>
+  <p class="corpo" id="diz1">sob medida pro que o seu negócio já faz: contar estoque, vender no balcão, provar quem recebeu o equipamento, conferir a nota antes de dar entrada.</p>
+  <p class="corpo" id="diz2">oito sistemas próprios. cada um começou numa tarefa que já existia e já era feita.</p>
+
+  <!-- post 3: a casa, o carimbo e o convite -->
+  <svg id="carimbo" viewBox="0 0 150 100" aria-hidden="true">
+    <defs><filter id="tinta"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.2"/></filter></defs>
+    <g filter="url(#tinta)" stroke="#2946D8" fill="none">
+      <rect x="4" y="4" width="142" height="92" rx="12" stroke-width="3"/>
+      <rect x="11" y="11" width="128" height="78" rx="8" stroke-width="1.5"/>
+    </g>
+    <g fill="#2946D8" font-family="Fraunces, serif" filter="url(#tinta)">
+      <text x="75" y="42" text-anchor="middle" font-size="20.5" font-weight="600" letter-spacing="3">PRÉVIA</text>
+      <text x="75" y="64" text-anchor="middle" font-size="20.5" font-weight="600" letter-spacing="3">GRÁTIS</text>
+      <line x1="38" y1="72.5" x2="112" y2="72.5" stroke="#2946D8" stroke-width="1"/>
+      <text x="75" y="85" text-anchor="middle" font-size="7.5" font-weight="500" letter-spacing="2.6">ANTES DE PAGAR</text>
+    </g>
+  </svg>
+  <p class="corpo" id="dois">duas mentes: uma desenha, a outra programa.</p>
+  <p id="marca">obliq<i>.</i></p>
+  <p class="corpo" id="chama">conta como o seu negócio trabalha hoje. a prévia do seu sistema sai <b>antes de você pagar.</b></p>
+  <p class="nota" id="broto">o próximo broto é o seu.</p>
+
+  <!-- os nomes: o JS põe cada um embaixo da sua planta -->
+</div>
+
+<script src="lib/lapis.js"></script>
+<script>
+// as oito plantas, uma por sistema, na ordem do jardim do site; a flor na tinta do produto (§2b)
+const PLANTAS = [
+  { x: 200,  nome: 'validade', q: '& estoque', tinta: '#4F7A2E', texto: '#446824', forma: 'cheia', alt: 60 },
+  { x: 540,  nome: 'controle', q: 'de papéis', tinta: '#1B1814', texto: '#5A564D', forma: 'cheia', alt: 50 },
+  { x: 880,  nome: 'entrega',  q: 'epi',       tinta: '#7A2463', texto: '#66194F', forma: 'raios', alt: 56 },
+  { x: 1300, nome: 'relevo',   q: '3d',        tinta: '#C98A00', texto: '#8F6400', forma: 'raios', alt: 50 },
+  { x: 1620, nome: 'confere',  q: 'nf',        tinta: '#0F6E72', texto: '#0B5A5E', forma: 'raios', alt: 58 },
+  { x: 1950, nome: 'vitrine',  q: 'de bolso',  tinta: '#B01C77', texto: '#8F1A63', forma: 'raios', alt: 52 },
+  { x: 2370, nome: 'adega',    q: '',          tinta: '#1B1814', texto: '#5A564D', forma: 'aro',   alt: 48 },
+  { x: 2640, nome: 'prospect', q: '',          tinta: '#2946D8', texto: '#1E33A8', forma: 'raios', alt: 56 },
+];
+const BASE = 1238;
+
+const pagina = document.getElementById('folha');
+for (const p of PLANTAS) {
+  const n = document.createElement('p'); n.className = 'nome'; n.style.left = p.x + 'px';
+  n.innerHTML = `<b>${p.nome}</b>` + (p.q ? `<span style="color:${p.texto}">${p.q}</span>` : '');
+  pagina.appendChild(n);
+}
+
+function desenha() {
+  const c = document.getElementById('jardim'), ESC = 2;
+  c.width = 3240 * ESC; c.height = 1350 * ESC;
+  const ctx = c.getContext('2d'); ctx.scale(ESC, ESC);
+  // o capim da beira, baixo, correndo pelos três posts
+  capim(ctx, stream(SEED * 17 + 1), 30, 3210, BASE + 4, 230, { hmin: 14, hmax: 46, umbelas: 0 });
+  // as plantas: árvore do lápis, galho em tinta, flor na tinta do produto
+  PLANTAS.forEach((p, i) => {
+    const r = stream(SEED * 17 + 10 + i);
+    // nada cresce por cima do texto: a copa fica abaixo de y 1030 e longe das emendas
+    const dentro = (x, y) => y > 990 && Math.abs(x - 1080) > 60 && Math.abs(x - 2160) > 60;
+    arvore(ctx, r, p.x, BASE, -Math.PI / 2 + rd(r, -0.06, 0.06), p.alt * 0.86, 7, { col: TINTA, florCol: p.tinta, florForma: p.forma, flor: 0.55, wmax: 4, dentro });
+  });
+  // o próximo broto: um botão fechado, sem cor (§5e: o que ainda está chegando)
+  const r = stream(SEED * 17 + 40), bx = 3000;
+  const haste = []; for (let y = BASE; y >= 1096; y -= 10) haste.push([bx + Math.sin((BASE - y) * 0.03) * 5, y]);
+  wob(ctx, haste, { w: 1.8, color: TINTA, rng: r, alpha: 0.7, amp: 0.4, noDust: true });
+  folha2(ctx, r, bx, 1190, -Math.PI / 2 - 0.9); folha2(ctx, r, bx + 3, 1160, -Math.PI / 2 + 0.9);
+  const [tx, ty] = haste[haste.length - 1];
+  const b = blob(r, tx, ty - 17, 11, 20);
+  wob(ctx, b.concat([b[0]]), { w: 1.4, color: TINTA, rng: r, alpha: 0.75, amp: 0.3, noDust: true });
+  for (const sd of [-1, 1]) wob(ctx, [[tx, ty], [tx + sd * 9, ty - 12], [tx + sd * 4, ty - 22]], { w: 1.1, color: TINTA, rng: r, alpha: 0.6, amp: 0.2, noDust: true });
+  // a seta a lápis da nota até o botão
+  seta(ctx, [[2900, 1036], [2946, 1052], [2984, 1070]], { w: 1.8, color: TINTA2, rng: stream(SEED * 17 + 41), cabeca: 10 });
+}
+function caixas() {
+  const el = document.getElementById('caixas'), q = el.getBoundingClientRect(), f = document.getElementById('folha').getBoundingClientRect();
+  const c = document.getElementById('jardim').getContext('2d');
+  const r = stream(SEED * 17 + 60), x0 = q.left - f.left, y0 = q.top - f.top;
+  for (let k = 0; k < 8; k++) {
+    const x = x0 + k * 53, y = y0 + 4, L = 36;
+    wob(c, rect(x, y, L, L), { w: 1.6, color: TINTA, rng: r, alpha: 0.85, amp: 0.5, noDust: true });
+    if (k < 6) hatch(c, rect(x + 3, y + 3, L - 6, L - 6), { rng: r, step: 5, color: TINTA, alpha: 0.7, w: 1.1, ang: -0.8 });
+  }
+}
+function folha2(ctx, r, x, y, ang) { folha(ctx, r, x, y, ang, TINTA, 1); }
+
+Promise.all([document.fonts.ready]).then(() => { desenha(); caixas(); document.body.dataset.pronto = '1'; });
+</script>
+</body>
+</html>
