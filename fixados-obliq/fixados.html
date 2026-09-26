@@ -5,22 +5,22 @@
 <meta name="viewport" content="width=3240">
 <title>Fixados obliq</title>
 <!--
-  Os 3 posts fixados do perfil da obliq: uma folha de 3240 x 1350 cortada em três posts de 1080 x 1350,
-  que contam uma história da esquerda para a direita: "o caderninho | vira | sistema."
-    1. o caderninho do negócio, a lápis, e o Ponto (ainda em tinta) olhando para ele;
-    2. o Ponto, já azul, no notebook, com pedaços de sistema saindo a lápis;
-    3. os projetos da casa como ícones de celular (a família da guideline §2b); o do Prospect é o
-       próprio Ponto, em papel sobre o azul da casa.
-  Setas a lápis atravessam as emendas e ligam um post no outro.
+  Os 3 posts fixados do perfil da obliq: UM banner de 3240 x 1350 cortado em três posts de 1080 x 1350.
+  A folha inteira é uma página de caderno (a espiral no alto, as pautas a lápis de ponta a ponta), e a
+  frase "o caderninho vira sistema." corre pelos três, sublinhada por um traço só. Da esquerda para a
+  direita, o caderninho vira sistema:
+    - a lista escrita à mão, com o Ponto ainda em tinta;
+    - uma seta grande atravessa a emenda até o Ponto, já azul, no notebook;
+    - os ícones dos sistemas saem voando da tela dele, atravessam a outra emenda e pousam em fila.
 
-  No grade do perfil o Instagram mostra cada post em 3:4, cortando 34 px de cada lado: nenhum texto
-  encosta nas emendas (x 1046 a 1114 e 2126 a 2194). Publicar na ordem 3, 2, 1.
+  No grade do perfil o Instagram mostra cada post em 3:4, cortando 34 px de cada lado: o texto fica longe
+  das emendas (x 1046 a 1114 e 2126 a 2194); o que atravessa é desenho. Publicar na ordem 3, 2, 1.
   Azul: "sistema.", o Ponto (a mascote, acento da interface) e o ponto do "obliq.", que não conta.
 -->
 <link rel="stylesheet" href="fontes/fontes.css">
 <style>
 :root {
-  --papel: #FAF7F0; --papel-base: #FDFBF5; --tinta: #1B1814; --tinta-2: #5A564D; --azul: #2946D8;
+  --papel-base: #FDFBF5; --tinta: #1B1814; --tinta-2: #5A564D; --azul: #2946D8;
   --fraunces: 'SOFT' 55, 'opsz' 80;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,9 +32,9 @@ body { width: 3240px; }
   font-family: 'Hanken Grotesk', sans-serif; -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision;
 }
 #folha > * { position: absolute; }
-canvas#lapis { left: 0; top: 0; width: 3240px; height: 1350px; pointer-events: none; }
+canvas.lapis { left: 0; top: 0; width: 3240px; height: 1350px; pointer-events: none; }
 
-.t { font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; line-height: 1; font-size: 158px; white-space: nowrap; }
+.t { font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; line-height: 1; font-size: 176px; white-space: nowrap; }
 .t i { font-style: italic; color: var(--azul); }
 .corpo { font-size: 34px; line-height: 48px; color: var(--tinta-2); }
 .corpo b { font-weight: 500; color: var(--tinta); }
@@ -46,143 +46,139 @@ canvas#lapis { left: 0; top: 0; width: 3240px; height: 1350px; pointer-events: n
 .pt-b { fill: var(--azul); } .pt-s { fill: #1E33A8; } .pt-k { fill: var(--tinta); } .pt-g { fill: var(--tinta-2); } .pt-l { fill: #93A8FF; }
 .ponto-tinta .pt-b, .ponto-tinta .pt-s { fill: var(--tinta); }
 .ponto-tinta .pt-l { fill: var(--tinta-2); }
-
-/* os ícones da família (guideline §2b): quadro na tinta cheia do produto, raio de 22,4% (a máscara do
-   iOS), o qualificador em Fraunces itálica ocupando ~74% da caixa */
-.ic { width: 176px; height: 176px; border-radius: 22.4%; display: grid; place-items: center; box-shadow: 0 2px 4px rgba(27,24,20,.08), 0 22px 40px -22px rgba(27,24,20,.45); }
-.ic span { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-variation-settings: 'SOFT' 70, 'opsz' 80; letter-spacing: -0.02em; line-height: 1; font-size: 112px; transform: translateY(-6px); }
-.ic.x span { transform: translateY(-14px); }
-.ic.epi { position: relative; }
-.ic.epi span { font-size: 84px; transform: translateY(-16px); }
-.ic.epi::after { content: ''; position: absolute; left: 32%; right: 32%; bottom: 36px; height: 5px; border-radius: 3px; background: #FAF7F0; }
-.ic.adega { background: #FAF7F0; box-shadow: inset 0 0 0 12px #1B1814, 0 22px 40px -22px rgba(27,24,20,.45); }
-.ic.adega span { font-size: 92px; }
-/* o Prospect: o Ponto é o ponto azul do "obliq." que criou perna; no ícone ele fica em papel sobre o
-   azul da casa (a tinta do Prospect), e os olhos, que são furos, deixam o azul aparecer */
-.ic.prospect .ponto-fixo { transform: translate(4px, -2px); }
 .ponto-papel .pt-b, .ponto-papel .pt-s, .ponto-papel .pt-k, .ponto-papel .pt-g, .ponto-papel .pt-l { fill: #FAF7F0; }
-.rotulo { font: 500 24px/1 'Hanken Grotesk'; color: var(--tinta); text-align: center; width: 176px; }
+
+/* os ícones da família (guideline §2b): tinta cheia do produto, raio de 22,4%, o qualificador em
+   Fraunces itálica ocupando ~74% da caixa. O tamanho vem de --s, então o mesmo ícone voa pequeno e
+   pousa grande. O do Prospect é o próprio Ponto, em papel sobre o azul da casa. */
+.ic { --s: 176px; width: var(--s); height: var(--s); border-radius: 22.4%; display: grid; place-items: center; box-shadow: 0 2px 4px rgba(27,24,20,.08), 0 22px 40px -22px rgba(27,24,20,.45); }
+.ic span { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-variation-settings: 'SOFT' 70, 'opsz' 80; letter-spacing: -0.02em; line-height: 1; font-size: calc(var(--s) * .636); transform: translateY(calc(var(--s) * -.034)); }
+.ic.x span { transform: translateY(calc(var(--s) * -.08)); }
+.ic.epi span { font-size: calc(var(--s) * .477); transform: translateY(calc(var(--s) * -.09)); }
+.ic.epi::after { content: ''; position: absolute; left: 32%; right: 32%; bottom: 20.5%; height: 2.8%; border-radius: 3px; background: #FAF7F0; }
+.ic.adega { box-shadow: inset 0 0 0 calc(var(--s) * .068) #1B1814, 0 22px 40px -22px rgba(27,24,20,.45); }
+.ic.adega span { font-size: calc(var(--s) * .52); }
+.rotulo { font: 500 24px/1 'Hanken Grotesk'; color: var(--tinta); text-align: center; }
 
 /* posições */
-#t1 { left: 80px; top: 118px; }
-#t2 { left: 1162px; top: 118px; }
-#t3 { left: 2242px; top: 118px; }
-#s1 { left: 86px; top: 312px; width: 900px; }
-#s2 { left: 1168px; top: 312px; width: 900px; }
-#s3 { left: 2248px; top: 312px; width: 900px; }
-#ponto1 { left: 600px; top: 1000px; }
-#ponto2 { left: 1380px; top: 700px; }
-#nota { left: 1170px; top: 1150px; }
-#marca { left: 2244px; top: 1030px; font-family: 'Fraunces', serif; font-weight: 700; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 150px; line-height: 1; }
+#t1 { left: 80px; top: 96px; }
+#t2 { left: 1190px; top: 96px; }
+#t3 { left: 2250px; top: 96px; }
+#ponto1 { left: 470px; top: 1010px; }
+#ponto2 { left: 1352px; top: 818px; }
+#nota { left: 1190px; top: 1226px; }
+#marca { left: 2250px; top: 1016px; font-family: 'Fraunces', serif; font-weight: 700; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 150px; line-height: 1; }
 #marca i { font-style: normal; color: var(--azul); }
-#convite { left: 2250px; top: 1222px; width: 900px; }
+#convite { left: 2256px; top: 1204px; width: 900px; }
+#oito { left: 2256px; top: 900px; }
 </style>
 </head>
 <body>
 <div id="folha">
-  <canvas id="lapis"></canvas>
+  <!-- a página de caderno: espiral, pautas, margem (atrás de tudo) -->
+  <canvas class="lapis" id="caderno"></canvas>
 
-  <!-- a frase, um pedaço por post -->
+  <!-- a frase, de ponta a ponta -->
   <p class="t" id="t1">o caderninho</p>
   <p class="t" id="t2">vira</p>
   <p class="t" id="t3"><i>sistema.</i></p>
 
-  <p class="corpo" id="s1">contar o estoque, vender no balcão, conferir a nota: o seu negócio já faz tudo isso.</p>
-  <p class="corpo" id="s2">a gente desenha e programa em cima do jeito que <b>você já trabalha.</b></p>
-  <p class="corpo" id="s3">oito sistemas próprios, <b>seis no ar.</b></p>
-
-  <!-- post 1: o Ponto ainda em tinta, olhando o caderninho (o caderninho é desenhado no canvas) -->
-  <span class="ponto-fixo ponto-tinta" id="ponto1" data-pose="pensando" data-q="7" data-escala="11"></span>
-
-  <!-- post 2: o Ponto azul no notebook -->
-  <span class="ponto-fixo" id="ponto2" data-pose="notebook" data-q="18" data-escala="20"></span>
+  <!-- o Ponto em tinta, junto da lista; o Ponto azul no notebook -->
+  <span class="ponto-fixo ponto-tinta" id="ponto1" data-pose="pensando" data-q="7" data-escala="10"></span>
+  <span class="ponto-fixo" id="ponto2" data-pose="notebook" data-q="18" data-escala="22"></span>
   <p class="nota" id="nota">duas mentes: uma desenha, a outra programa.</p>
 
-  <!-- post 3: a família de ícones; o do Prospect é o próprio Ponto, em papel sobre o azul da casa -->
-  <div class="ic" style="left:2264px;top:470px;background:#E3A008;color:#1B1814"><span>3d</span></div>
-  <div class="ic x" style="left:2496px;top:470px;background:#4F7A2E;color:#FAF7F0"><span>ve</span></div>
-  <div class="ic" style="left:2728px;top:470px;background:#0F6E72;color:#FAF7F0"><span>nf</span></div>
-  <div class="ic prospect" style="left:2960px;top:470px;background:#2946D8"><span class="ponto-fixo ponto-papel" data-pose="parado" data-q="0" data-escala="7.8"></span></div>
-  <div class="ic epi" style="left:2264px;top:740px;background:#7A2463;color:#FAF7F0"><span>epi</span></div>
-  <div class="ic x" style="left:2496px;top:740px;background:#1B1814;color:#FAF7F0"><span>co</span></div>
-  <div class="ic adega" style="left:2728px;top:740px;color:#1B1814"><span>ad</span></div>
-  <div class="ic" style="left:2960px;top:740px;background:#FF8FE9;color:#1B1814"><span>vi</span></div>
-  <p class="rotulo" style="left:2264px;top:664px">relevo</p>
-  <p class="rotulo" style="left:2496px;top:664px">validade</p>
-  <p class="rotulo" style="left:2728px;top:664px">confere</p>
-  <p class="rotulo" style="left:2960px;top:664px">prospect</p>
-  <p class="rotulo" style="left:2264px;top:934px">entrega</p>
-  <p class="rotulo" style="left:2496px;top:934px">controle</p>
-  <p class="rotulo" style="left:2728px;top:934px">adega</p>
-  <p class="rotulo" style="left:2960px;top:934px">vitrine</p>
+  <!-- os ícones: o JS monta cada um da lista ICONES (voando ou pousado) -->
 
+  <p class="corpo" id="oito">oito sistemas próprios, <b>seis no ar.</b></p>
   <p id="marca">obliq<i>.</i></p>
   <p class="corpo" id="convite">a prévia do seu sistema sai <b>antes de você pagar.</b></p>
+
+  <!-- o lápis por cima: a lista à mão, a seta, o rastro dos ícones, o sublinhado -->
+  <canvas class="lapis" id="lapis"></canvas>
 </div>
 
 <script src="lib/ponto.js"></script>
 <script src="lib/lapis.js"></script>
 <script>
+// os ícones: os quatro primeiros saem voando do notebook e atravessam a emenda; os outros pousaram
+const ICONES = [
+  { g: '3d',  bg: '#E3A008', fg: '#1B1814', x: 1800, y: 660, s: 92,  r: -12, nome: 'relevo' },
+  { g: 've',  bg: '#4F7A2E', fg: '#FAF7F0', x: 1990, y: 520, s: 112, r: 9,   nome: 'validade', cls: 'x' },
+  { g: 'nf',  bg: '#0F6E72', fg: '#FAF7F0', x: 2310, y: 400, s: 132, r: -7,  nome: 'confere' },
+  { g: 'vi',  bg: '#FF8FE9', fg: '#1B1814', x: 2560, y: 356, s: 150, r: 6,   nome: 'vitrine' },
+  { g: 'epi', bg: '#7A2463', fg: '#FAF7F0', x: 2330, y: 640, s: 170, r: 0,   nome: 'entrega', cls: 'epi' },
+  { g: 'co',  bg: '#1B1814', fg: '#FAF7F0', x: 2540, y: 640, s: 170, r: 0,   nome: 'controle', cls: 'x' },
+  { g: 'ad',  bg: '#FAF7F0', fg: '#1B1814', x: 2750, y: 640, s: 170, r: 0,   nome: 'adega', cls: 'adega' },
+  { g: '',    bg: '#2946D8', fg: '#FAF7F0', x: 2960, y: 640, s: 170, r: 0,   nome: 'prospect', ponto: true },
+];
+const pagina = document.getElementById('folha');
+const antes = document.getElementById('oito');
+for (const i of ICONES) {
+  const d = document.createElement('div');
+  d.className = 'ic ' + (i.cls || '');
+  d.style.cssText = `--s:${i.s}px;left:${i.x - i.s / 2}px;top:${i.y - i.s / 2}px;background:${i.bg};color:${i.fg};transform:rotate(${i.r}deg)`;
+  d.innerHTML = i.ponto ? `<span class="ponto-fixo ponto-papel" data-pose="parado" data-q="0" data-escala="${(i.s * 7.8 / 176).toFixed(2)}" style="transform:translate(${i.s * 0.02}px,0)"></span>` : `<span>${i.g}</span>`;
+  pagina.insertBefore(d, antes);
+  if (!i.r) {
+    const n = document.createElement('p'); n.className = 'rotulo'; n.textContent = i.nome;
+    n.style.cssText = `left:${i.x - 100}px;width:200px;top:${i.y + i.s / 2 + 16}px`;
+    pagina.insertBefore(n, antes);
+  }
+}
+
 document.querySelectorAll('.ponto-fixo').forEach((el) => {
   const q = window.Ponto.quadrosDe(el.dataset.pose)[Number(el.dataset.q) || 0];
   const e = Number(el.dataset.escala) || 2;
   el.innerHTML = `<svg viewBox="0 0 24 16" width="${24 * e}" height="${16 * e}" aria-hidden="true">${q}</svg>`;
 });
 
-function desenha() {
-  const c = document.getElementById('lapis'), ESC = 2;
-  c.width = 3240 * ESC; c.height = 1350 * ESC;
-  const ctx = c.getContext('2d'); ctx.scale(ESC, ESC);
+const ESC = 2;
+function tela(id) { const c = document.getElementById(id); c.width = 3240 * ESC; c.height = 1350 * ESC; const ctx = c.getContext('2d'); ctx.scale(ESC, ESC); return ctx; }
 
-  // ---- post 1: o caderninho, torto, com a lista à mão
-  const r = stream(SEED * 23 + 1);
-  ctx.save(); ctx.translate(130, 450); ctx.rotate(-0.07);
-  const LW = 610, LH = 600;
-  fillPoly(ctx, rect(0, 0, LW, LH), '#FFFFFF', 0.9);
-  wob(ctx, rect(0, 0, LW, LH), { w: 2, color: TINTA, rng: r, alpha: 0.85, amp: 0.8, noDust: true });
-  for (let k = 0; k < 9; k++) wob(ctx, circ(50 + k * 64, 0, 11, 16, 1.05, 0.4), { w: 1.8, color: TINTA, rng: r, alpha: 0.8, amp: 0.3, noDust: true });
-  for (let y = 96; y < LH - 20; y += 66) wob(ctx, [[20, y], [LW - 20, y]], { w: 0.9, color: TINTA2, rng: r, alpha: 0.35, amp: 0.5, noDust: true });
-  wob(ctx, [[74, 30], [74, LH - 12]], { w: 1, color: TINTA2, rng: r, alpha: 0.45, amp: 0.4, noDust: true });
-  const LISTA = [['leite ........ 12', 88], ['arroz ........ 8', 154], ['vinho tinto ... 6', 220], ['luva entregue', 286], ['conferir a nota', 352], ['cerveja ...... 24', 418], ['fechou o caixa', 484]];
-  for (const [txt, y] of LISTA) escreve(ctx, txt, 96, y, 40, r);
-  // riscado, circulado e um visto: o caderninho de quem já faz a tarefa todo dia
-  wob(ctx, [[92, 404], [440, 396]], { w: 2.2, color: TINTA, rng: r, alpha: 0.85, amp: 0.8 });
-  wob(ctx, elipse(250, 336, 190, 38), { w: 1.8, color: TINTA, rng: r, alpha: 0.8, amp: 1, taper: 'out' });
-  wob(ctx, [[470, 272], [488, 290], [520, 250]], { w: 2.4, color: TINTA, rng: r, alpha: 0.9, amp: 0.4 });
-  ctx.restore();
-
-  // setas a lápis: do caderninho para o notebook, e do notebook para os ícones (atravessam as emendas)
-  seta(ctx, [[790, 780], [960, 740], [1150, 770], [1330, 830]], { w: 2.4, color: TINTA, rng: stream(SEED * 23 + 2), cabeca: 16 });
-  seta(ctx, [[1880, 760], [2020, 690], [2150, 650], [2236, 640]], { w: 2.4, color: TINTA, rng: stream(SEED * 23 + 3), cabeca: 16 });
-
-  // ---- post 2: pedaços de sistema saindo do notebook, a lápis
-  const r2 = stream(SEED * 23 + 4), T2 = TINTA2;
-  // uma tabela
-  ctx.save(); ctx.translate(1230, 470); ctx.rotate(-0.08);
-  wob(ctx, rect(0, 0, 190, 130), { w: 1.8, color: T2, rng: r2, alpha: 0.8, amp: 0.5, noDust: true });
-  for (let y = 32; y < 130; y += 32) wob(ctx, [[0, y], [190, y]], { w: 1.1, color: T2, rng: r2, alpha: 0.6, amp: 0.4, noDust: true });
-  wob(ctx, [[70, 0], [70, 130]], { w: 1.1, color: T2, rng: r2, alpha: 0.6, amp: 0.4, noDust: true });
-  ctx.restore();
-  // a chave ligada
-  ctx.save(); ctx.translate(1520, 420); ctx.rotate(0.06);
-  wob(ctx, elipse(60, 30, 60, 28), { w: 1.8, color: T2, rng: r2, alpha: 0.8, amp: 0.5, noDust: true });
-  dot(ctx, 90, 30, 18, 0.8, T2);
-  ctx.restore();
-  // o visto num círculo
-  wob(ctx, circ(1790, 470, 44, 30, 1.05, -2), { w: 1.9, color: T2, rng: r2, alpha: 0.8, amp: 0.6, noDust: true });
-  wob(ctx, [[1770, 472], [1786, 490], [1814, 452]], { w: 2.2, color: T2, rng: r2, alpha: 0.85, amp: 0.3, noDust: true });
-  // as barras
-  ctx.save(); ctx.translate(1880, 560); ctx.rotate(-0.05);
-  for (const [x, h] of [[0, 50], [34, 86], [68, 64], [102, 110]]) wob(ctx, rect(x, 120 - h, 24, h), { w: 1.6, color: T2, rng: r2, alpha: 0.8, amp: 0.4, noDust: true });
-  wob(ctx, [[-10, 120], [140, 120]], { w: 1.6, color: T2, rng: r2, alpha: 0.8, amp: 0.4, noDust: true });
-  ctx.restore();
-  // os fiapos saindo do notebook até cada pedaço
-  for (const [x, y] of [[1330, 620], [1580, 480], [1790, 530], [1920, 690]]) wob(ctx, [[1620, 700], [(1620 + x) / 2 + 10, (700 + y) / 2 - 16], [x, y]], { w: 1, color: T2, rng: r2, alpha: 0.5, amp: 0.4, gap: 0.4, noDust: true });
-
+function caderno() {
+  const ctx = tela('caderno'), r = stream(SEED * 29 + 1);
+  // a espiral no alto, de ponta a ponta
+  for (let x = 40; x < 3220; x += 62) {
+    wob(ctx, circ(x, 34, 12, 16, 1.05, 0.4), { w: 1.8, color: TINTA, rng: r, alpha: 0.7, amp: 0.3, noDust: true });
+    wob(ctx, [[x, 46], [x + 2, 58]], { w: 1.4, color: TINTA2, rng: r, alpha: 0.5, amp: 0.2, noDust: true });
+  }
+  // as pautas: atravessam os três posts
+  for (let y = 380; y <= 1320; y += 70) wob(ctx, [[0, y], [3240, y + Math.sin(y) * 2]], { w: 1, color: TINTA2, rng: r, alpha: 0.28, amp: 0.8, noDust: true });
+  // a margem do caderno
+  wob(ctx, [[150, 330], [152, 1350]], { w: 1.2, color: TINTA2, rng: r, alpha: 0.4, amp: 0.5, noDust: true });
 }
+
+function tracos() {
+  const ctx = tela('lapis'), r = stream(SEED * 29 + 2);
+  // o sublinhado da frase, um traço só pelos três posts
+  const sub = []; for (let x = 84; x <= 3110; x += 40) sub.push([x, 300 + Math.sin(x * 0.004) * 7 + Math.sin(x * 0.013) * 3]);
+  wob(ctx, sub, { w: 3.2, color: TINTA, rng: r, alpha: 0.85, amp: 1.1 });
+
+  // a lista à mão, nas pautas do post 1
+  const LISTA = [['leite ........ 12', 520], ['arroz ........ 8', 590], ['vinho tinto ... 6', 660], ['luva entregue', 730], ['conferir a nota', 800], ['cerveja ...... 24', 870], ['fechou o caixa', 940]];
+  for (const [txt, y] of LISTA) escreve(ctx, txt, 190, y - 6, 50, r);
+  wob(ctx, [[186, 850], [600, 842]], { w: 2.4, color: TINTA, rng: r, alpha: 0.85, amp: 0.8 });
+  wob(ctx, elipse(370, 780, 220, 44), { w: 2, color: TINTA, rng: r, alpha: 0.8, amp: 1, taper: 'out' });
+  wob(ctx, [[652, 704], [674, 726], [712, 680]], { w: 2.6, color: TINTA, rng: r, alpha: 0.9, amp: 0.4 });
+
+  // a seta grande: da lista, atravessando a emenda, até o notebook
+  seta(ctx, [[660, 610], [860, 520], [1080, 540], [1260, 660], [1380, 830]], { w: 3.4, color: TINTA, rng: stream(SEED * 29 + 3), cabeca: 22 });
+
+  // o rastro dos ícones saindo do notebook, tracejado, atravessando a outra emenda
+  const rastro = [[1640, 860], [1720, 740], ...ICONES.slice(0, 4).map((i) => [i.x, i.y]), [2700, 330]];
+  wob(ctx, chaikin(rastro, false, 3), { w: 1.6, color: TINTA2, rng: stream(SEED * 29 + 4), alpha: 0.6, amp: 0.8, gap: 0.5, noDust: true });
+  // riscos de velocidade atrás de cada ícone voando
+  for (const i of ICONES.slice(0, 4)) for (const k of [-1, 0, 1]) {
+    const bx = i.x - i.s * 0.62, by = i.y + i.s * 0.28 + k * i.s * 0.16;
+    wob(ctx, [[bx, by], [bx - i.s * 0.45, by + i.s * 0.2]], { w: 1.5, color: TINTA2, rng: r, alpha: 0.55, amp: 0.3, noDust: true });
+  }
+}
+function elipse(cx, cy, rx, ry) { const p = []; for (let i = 0; i <= 40; i++) { const a = -2.2 + 6.9 * i / 40; p.push([cx + rx * Math.cos(a), cy + ry * Math.sin(a)]); } return p; }
+// a letra à mão sem os vãos: cada glifo encosta no anterior pela tinta, não pela caixa
 function escreve(ctx, txt, x, y, sz, r) {
   let cx = x;
-  for (const chr of txt.normalize('NFD').replace(/[\u0300-\u036f]/g, '')) {
+  for (const chr of txt.normalize('NFD').replace(/[̀-ͯ]/g, '')) {
     if (chr === ' ') { cx += sz * 0.36; continue; }
     const g = window.__A[chr]; if (!g) { cx += sz * 0.4; continue; }
     let x0 = 9, x1 = -9; for (const tr of g) for (const q of tr) { x0 = Math.min(x0, q[0]); x1 = Math.max(x1, q[0]); }
@@ -190,9 +186,8 @@ function escreve(ctx, txt, x, y, sz, r) {
     cx += (x1 - x0 + 0.17) * sz;
   }
 }
-function elipse(cx, cy, rx, ry) { const p = []; for (let i = 0; i <= 40; i++) { const a = -2.2 + 6.9 * i / 40; p.push([cx + rx * Math.cos(a), cy + ry * Math.sin(a)]); } return p; }
 
-document.fonts.ready.then(() => { desenha(); document.body.dataset.pronto = '1'; });
+document.fonts.ready.then(() => { caderno(); tracos(); document.body.dataset.pronto = '1'; });
 </script>
 </body>
 </html>
