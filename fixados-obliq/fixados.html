@@ -67,10 +67,10 @@ canvas.lapis { left: 0; top: 0; width: 3240px; height: 1350px; pointer-events: n
 #ponto1 { left: 470px; top: 1010px; }
 #ponto2 { left: 1352px; top: 818px; }
 #nota { left: 1190px; top: 1226px; }
-#marca { left: 2250px; top: 1016px; font-family: 'Fraunces', serif; font-weight: 700; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 150px; line-height: 1; }
+#marca { left: 2250px; top: 990px; font-family: 'Fraunces', serif; font-weight: 700; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 150px; line-height: 1; }
 #marca i { font-style: normal; color: var(--azul); }
-#convite { left: 2256px; top: 1204px; width: 900px; }
-#oito { left: 2256px; top: 900px; }
+#convite { left: 2256px; top: 1196px; width: 900px; }
+#oito { left: 2256px; top: 890px; }
 </style>
 </head>
 <body>
@@ -104,13 +104,13 @@ canvas.lapis { left: 0; top: 0; width: 3240px; height: 1350px; pointer-events: n
 // os ícones: os quatro primeiros saem voando do notebook e atravessam a emenda; os outros pousaram
 const ICONES = [
   { g: '3d',  bg: '#E3A008', fg: '#1B1814', x: 1800, y: 660, s: 92,  r: -12, nome: 'relevo' },
-  { g: 've',  bg: '#4F7A2E', fg: '#FAF7F0', x: 1990, y: 520, s: 112, r: 9,   nome: 'validade', cls: 'x' },
-  { g: 'nf',  bg: '#0F6E72', fg: '#FAF7F0', x: 2310, y: 400, s: 132, r: -7,  nome: 'confere' },
-  { g: 'vi',  bg: '#FF8FE9', fg: '#1B1814', x: 2560, y: 356, s: 150, r: 6,   nome: 'vitrine' },
-  { g: 'epi', bg: '#7A2463', fg: '#FAF7F0', x: 2330, y: 640, s: 170, r: 0,   nome: 'entrega', cls: 'epi' },
-  { g: 'co',  bg: '#1B1814', fg: '#FAF7F0', x: 2540, y: 640, s: 170, r: 0,   nome: 'controle', cls: 'x' },
-  { g: 'ad',  bg: '#FAF7F0', fg: '#1B1814', x: 2750, y: 640, s: 170, r: 0,   nome: 'adega', cls: 'adega' },
-  { g: '',    bg: '#2946D8', fg: '#FAF7F0', x: 2960, y: 640, s: 170, r: 0,   nome: 'prospect', ponto: true },
+  { g: 've',  bg: '#4F7A2E', fg: '#FAF7F0', x: 1990, y: 590, s: 112, r: 9,   nome: 'validade', cls: 'x' },
+  { g: 'nf',  bg: '#0F6E72', fg: '#FAF7F0', x: 2310, y: 478, s: 128, r: -7,  nome: 'confere' },
+  { g: 'vi',  bg: '#FF8FE9', fg: '#1B1814', x: 2560, y: 446, s: 140, r: 6,   nome: 'vitrine' },
+  { g: 'epi', bg: '#7A2463', fg: '#FAF7F0', x: 2330, y: 710, s: 170, r: 0,   nome: 'entrega', cls: 'epi' },
+  { g: 'co',  bg: '#1B1814', fg: '#FAF7F0', x: 2540, y: 710, s: 170, r: 0,   nome: 'controle', cls: 'x' },
+  { g: 'ad',  bg: '#FAF7F0', fg: '#1B1814', x: 2750, y: 710, s: 170, r: 0,   nome: 'adega', cls: 'adega' },
+  { g: '',    bg: '#2946D8', fg: '#FAF7F0', x: 2960, y: 710, s: 170, r: 0,   nome: 'prospect', ponto: true },
 ];
 const pagina = document.getElementById('folha');
 const antes = document.getElementById('oito');
@@ -166,7 +166,7 @@ function tracos() {
   seta(ctx, [[660, 610], [860, 520], [1080, 540], [1260, 660], [1380, 830]], { w: 3.4, color: TINTA, rng: stream(SEED * 29 + 3), cabeca: 22 });
 
   // o rastro dos ícones saindo do notebook, tracejado, atravessando a outra emenda
-  const rastro = [[1640, 860], [1720, 740], ...ICONES.slice(0, 4).map((i) => [i.x, i.y]), [2700, 330]];
+  const rastro = [[1640, 860], [1720, 740], ...ICONES.slice(0, 4).map((i) => [i.x, i.y]), [2700, 420]];
   wob(ctx, chaikin(rastro, false, 3), { w: 1.6, color: TINTA2, rng: stream(SEED * 29 + 4), alpha: 0.6, amp: 0.8, gap: 0.5, noDust: true });
   // riscos de velocidade atrás de cada ícone voando
   for (const i of ICONES.slice(0, 4)) for (const k of [-1, 0, 1]) {
