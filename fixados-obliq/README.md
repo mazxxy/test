@@ -9,8 +9,8 @@ sistema."**
 2. **vira**: o Ponto, já azul, no notebook, com pedaços de sistema saindo a lápis (tabela, chave,
    visto, gráfico) e "duas mentes: uma desenha, a outra programa."
 3. **sistema.**: os projetos da casa como ícones de celular, na família da guideline (§2b): relevo 3d,
-   validade, confere nf, vitrine, entrega epi, controle, adega. O espaço do Prospect está vazio,
-   tracejado: o Ponto pulou dele. Embaixo, "obliq." e "a prévia do seu sistema sai antes de você pagar."
+   validade, confere nf, vitrine, entrega epi, controle, adega, e o do Prospect, que é o próprio Ponto
+   em papel sobre o azul da casa (o ponto do "obliq." que criou perna). Embaixo, "obliq." e "a prévia do seu sistema sai antes de você pagar."
 
 Setas a lápis saem do caderninho, atravessam a emenda até o notebook e dali até os ícones.
 
@@ -41,5 +41,5 @@ Publique na ordem **fixado-3, fixado-2, fixado-1** e fixe os três. O grade most
 ## Antes de publicar
 
 - Conferir se "oito sistemas próprios, seis no ar" continua valendo no dia.
-- O Prospect aparece como espaço vazio (o Ponto pulou dele) porque a guideline não define um ícone
-  mínimo para ele. Se ele ganhar um, é só trocar o espaço pelo ícone.
+- O ícone do Prospect (o Ponto em papel sobre o azul) é novo: a guideline ainda não define um ícone
+  mínimo para ele. Vale registrar na guideline se for adotado.

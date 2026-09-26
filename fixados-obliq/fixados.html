@@ -9,8 +9,8 @@
   que contam uma história da esquerda para a direita: "o caderninho | vira | sistema."
     1. o caderninho do negócio, a lápis, e o Ponto (ainda em tinta) olhando para ele;
     2. o Ponto, já azul, no notebook, com pedaços de sistema saindo a lápis;
-    3. os projetos da casa como ícones de celular (a família da guideline §2b), e o Ponto pulando
-       do espaço do Prospect.
+    3. os projetos da casa como ícones de celular (a família da guideline §2b); o do Prospect é o
+       próprio Ponto, em papel sobre o azul da casa.
   Setas a lápis atravessam as emendas e ligam um post no outro.
 
   No grade do perfil o Instagram mostra cada post em 3:4, cortando 34 px de cada lado: nenhum texto
@@ -57,7 +57,10 @@ canvas#lapis { left: 0; top: 0; width: 3240px; height: 1350px; pointer-events: n
 .ic.epi::after { content: ''; position: absolute; left: 32%; right: 32%; bottom: 36px; height: 5px; border-radius: 3px; background: #FAF7F0; }
 .ic.adega { background: #FAF7F0; box-shadow: inset 0 0 0 12px #1B1814, 0 22px 40px -22px rgba(27,24,20,.45); }
 .ic.adega span { font-size: 92px; }
-.ic.vazio { background: transparent; box-shadow: none; }
+/* o Prospect: o Ponto é o ponto azul do "obliq." que criou perna; no ícone ele fica em papel sobre o
+   azul da casa (a tinta do Prospect), e os olhos, que são furos, deixam o azul aparecer */
+.ic.prospect .ponto-fixo { transform: translate(4px, -2px); }
+.ponto-papel .pt-b, .ponto-papel .pt-s, .ponto-papel .pt-k, .ponto-papel .pt-g, .ponto-papel .pt-l { fill: #FAF7F0; }
 .rotulo { font: 500 24px/1 'Hanken Grotesk'; color: var(--tinta); text-align: center; width: 176px; }
 
 /* posições */
@@ -69,7 +72,6 @@ canvas#lapis { left: 0; top: 0; width: 3240px; height: 1350px; pointer-events: n
 #s3 { left: 2248px; top: 312px; width: 900px; }
 #ponto1 { left: 600px; top: 1000px; }
 #ponto2 { left: 1380px; top: 700px; }
-#ponto3 { left: 2944px; top: 300px; }
 #nota { left: 1170px; top: 1150px; }
 #marca { left: 2244px; top: 1030px; font-family: 'Fraunces', serif; font-weight: 700; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 150px; line-height: 1; }
 #marca i { font-style: normal; color: var(--azul); }
@@ -96,11 +98,11 @@ canvas#lapis { left: 0; top: 0; width: 3240px; height: 1350px; pointer-events: n
   <span class="ponto-fixo" id="ponto2" data-pose="notebook" data-q="18" data-escala="20"></span>
   <p class="nota" id="nota">duas mentes: uma desenha, a outra programa.</p>
 
-  <!-- post 3: a família de ícones; o espaço do Prospect fica vazio, que o Ponto pulou dele -->
+  <!-- post 3: a família de ícones; o do Prospect é o próprio Ponto, em papel sobre o azul da casa -->
   <div class="ic" style="left:2264px;top:470px;background:#E3A008;color:#1B1814"><span>3d</span></div>
   <div class="ic x" style="left:2496px;top:470px;background:#4F7A2E;color:#FAF7F0"><span>ve</span></div>
   <div class="ic" style="left:2728px;top:470px;background:#0F6E72;color:#FAF7F0"><span>nf</span></div>
-  <div class="ic vazio" id="vazio" style="left:2960px;top:470px"></div>
+  <div class="ic prospect" style="left:2960px;top:470px;background:#2946D8"><span class="ponto-fixo ponto-papel" data-pose="parado" data-q="0" data-escala="7.8"></span></div>
   <div class="ic epi" style="left:2264px;top:740px;background:#7A2463;color:#FAF7F0"><span>epi</span></div>
   <div class="ic x" style="left:2496px;top:740px;background:#1B1814;color:#FAF7F0"><span>co</span></div>
   <div class="ic adega" style="left:2728px;top:740px;color:#1B1814"><span>ad</span></div>
@@ -113,7 +115,6 @@ canvas#lapis { left: 0; top: 0; width: 3240px; height: 1350px; pointer-events: n
   <p class="rotulo" style="left:2496px;top:934px">controle</p>
   <p class="rotulo" style="left:2728px;top:934px">adega</p>
   <p class="rotulo" style="left:2960px;top:934px">vitrine</p>
-  <span class="ponto-fixo" id="ponto3" data-pose="achou" data-q="5" data-escala="8"></span>
 
   <p id="marca">obliq<i>.</i></p>
   <p class="corpo" id="convite">a prévia do seu sistema sai <b>antes de você pagar.</b></p>
@@ -178,12 +179,6 @@ function desenha() {
   // os fiapos saindo do notebook até cada pedaço
   for (const [x, y] of [[1330, 620], [1580, 480], [1790, 530], [1920, 690]]) wob(ctx, [[1620, 700], [(1620 + x) / 2 + 10, (700 + y) / 2 - 16], [x, y]], { w: 1, color: T2, rng: r2, alpha: 0.5, amp: 0.4, gap: 0.4, noDust: true });
 
-  // ---- post 3: o espaço vazio do Prospect, tracejado, de onde o Ponto pulou
-  const x0 = 2960, y0 = 470, S = 176, rr = 40, r3 = stream(SEED * 23 + 5);
-  const borda = [[x0 + rr, y0], [x0 + S - rr, y0], [x0 + S, y0 + rr], [x0 + S, y0 + S - rr], [x0 + S - rr, y0 + S], [x0 + rr, y0 + S], [x0, y0 + S - rr], [x0, y0 + rr], [x0 + rr, y0]];
-  wob(ctx, chaikin(borda, false, 2), { w: 2, color: TINTA2, rng: r3, alpha: 0.75, amp: 0.5, gap: 0.5, noDust: true });
-  // riscos de movimento do pulo
-  for (const dx of [-18, 0, 18]) wob(ctx, [[3048 + dx, 560], [3048 + dx * 1.3, 500]], { w: 1.6, color: TINTA2, rng: r3, alpha: 0.6, amp: 0.3, noDust: true });
 }
 function escreve(ctx, txt, x, y, sz, r) {
   let cx = x;
