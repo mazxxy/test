@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Ponto dançando</title>
+<!--
+  O GIF da fatura: o Ponto dançando (a pose "danca" do ponto.js, 16 quadros de 125 ms, a mesma do app),
+  num palco de papel, com a sombra a lápis que amassa e estica com ele e notinhas a lápis em volta,
+  com o traço vivo (redesenhado a cada quadro, como o vivo dos ícones da casa).
+
+  ?texto=0 tira a frase de cima (fica só o Ponto e o "obliq."). render.mjs chama quadro(i) para cada
+  um dos 16 quadros e fotografa. Papel liso, sem a textura: no GIF ela só pesa e suja a paleta.
+  Azul: o Ponto, o "chegou." e o ponto do "obliq.", que não conta.
+-->
+<link rel="stylesheet" href="fontes/fontes.css">
+<style>
+:root { --papel: #FAF7F0; --tinta: #1B1814; --tinta-2: #5A564D; --azul: #2946D8; --fraunces: 'SOFT' 55, 'opsz' 80; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #D9D4C8; }
+#palco { position: relative; width: 720px; height: 720px; overflow: hidden; background: var(--papel); color: var(--tinta); font-family: 'Hanken Grotesk', sans-serif; -webkit-font-smoothing: antialiased; }
+#palco > * { position: absolute; }
+canvas { left: 0; top: 0; width: 720px; height: 720px; }
+#frase { left: 0; width: 720px; top: 62px; text-align: center; font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 70px; line-height: 1; }
+#frase i { color: var(--azul); }
+#ponto { left: 144px; top: 244px; line-height: 0; }
+#ponto svg { display: block; shape-rendering: crispEdges; }
+.pt-b { fill: var(--azul); } .pt-s { fill: #1E33A8; } .pt-k { fill: var(--tinta); } .pt-g { fill: var(--tinta-2); } .pt-l { fill: #93A8FF; }
+#marca { left: 0; width: 720px; top: 598px; text-align: center; font-family: 'Fraunces', serif; font-weight: 700; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 56px; line-height: 1; }
+#marca i { font-style: normal; color: var(--azul); }
+body.sem-texto #frase { display: none; }
+body.sem-texto #ponto { top: 200px; }
+</style>
+</head>
+<body>
+<div id="palco">
+  <canvas id="lapis"></canvas>
+  <p id="frase">a fatura <i>chegou.</i></p>
+  <span id="ponto"></span>
+  <p id="marca">obliq<i>.</i></p>
+</div>
+<script src="lib/ponto.js"></script>
+<script src="lib/lapis.js"></script>
+<script>
+const semTexto = new URLSearchParams(location.search).get('texto') === '0';
+if (semTexto) document.body.classList.add('sem-texto');
+
+const E = 18;                                   // 18 px por pixel do Ponto
+const QS = window.Ponto.quadrosDe('danca');     // os 16 quadros da dança, em SVG
+const ponto = document.getElementById('ponto');
+const TOPO = semTexto ? 200 : 244, CHAO = TOPO + 15 * E;   // os pés pisam na linha 15 da grade
+
+// de cada quadro, onde o Ponto está: a linha mais baixa (pé ou corpo) e a largura, para a sombra
+const MEDIDAS = QS.map((svg) => {
+  let x0 = 99, x1 = -1, y1 = -1;
+  for (const m of svg.matchAll(/x="([\d.]+)" y="([\d.]+)" width="([\d.]+)"/g)) {
+    const x = +m[1], y = +m[2], w = +m[3];
+    x0 = Math.min(x0, x); x1 = Math.max(x1, x + w); y1 = Math.max(y1, y + 1);
+  }
+  return { x0, x1, y1 };
+});
+
+const ESC = 2;
+const c = document.getElementById('lapis'); c.width = 720 * ESC; c.height = 720 * ESC;
+const ctx = c.getContext('2d'); ctx.scale(ESC, ESC);
+
+// uma notinha musical a lápis: cabeça, haste e bandeirinha
+function nota(r, x, y, s, dupla) {
+  const cab = blob(r, x, y, s * 0.36, s * 0.26);
+  fillPoly(ctx, cab, TINTA2, 0.85);
+  wob(ctx, [[x + s * 0.3, y - s * 0.06], [x + s * 0.32, y - s * 1.2]], { w: 2.4, color: TINTA2, rng: r, alpha: 0.9, amp: 0.3, noDust: true });
+  if (dupla) {
+    const c2 = blob(r, x + s * 0.8, y - s * 0.14, s * 0.36, s * 0.26); fillPoly(ctx, c2, TINTA2, 0.85);
+    wob(ctx, [[x + s * 1.1, y - s * 0.2], [x + s * 1.12, y - s * 1.34]], { w: 2.4, color: TINTA2, rng: r, alpha: 0.9, amp: 0.3, noDust: true });
+    wob(ctx, [[x + s * 0.32, y - s * 1.2], [x + s * 1.12, y - s * 1.34]], { w: 4, color: TINTA2, rng: r, alpha: 0.9, amp: 0.3, noDust: true });
+  } else {
+    wob(ctx, [[x + s * 0.32, y - s * 1.2], [x + s * 0.7, y - s * 0.86], [x + s * 0.62, y - s * 0.5]], { w: 2.2, color: TINTA2, rng: r, alpha: 0.9, amp: 0.3, noDust: true });
+  }
+}
+
+// as notinhas sobem e descem em volta do Ponto, cada uma no seu tempo
+const NOTAS = [
+  { x: 128, y: 330, s: 44, d: false, f: 0 },
+  { x: 560, y: 300, s: 40, d: true,  f: 2 },
+  { x: 92,  y: 470, s: 34, d: true,  f: 5 },
+  { x: 596, y: 450, s: 38, d: false, f: 3 },
+];
+
+function quadro(i) {
+  ponto.innerHTML = `<svg viewBox="0 0 24 16" width="${24 * E}" height="${16 * E}">${QS[i]}</svg>`;
+  ctx.clearRect(0, 0, 720, 720);
+  const r = stream(SEED * 37 + i);                // o traço vivo: cada quadro, uma variante
+  // o chão
+  wob(ctx, [[150, CHAO + 4], [360, CHAO + 6], [570, CHAO + 3]], { w: 2, color: TINTA, rng: r, alpha: 0.7, amp: 1, noDust: true });
+  // a sombra: embaixo do corpo, menor e mais clara quando ele sobe do chão
+  const m = MEDIDAS[i], alto = 15 - m.y1;
+  const cx = 144 + (m.x0 + m.x1) / 2 * E, rx = (m.x1 - m.x0) / 2 * E * (1 - alto * 0.18), ry = 11 - alto * 3;
+  // (a elipse é deitada de propósito: o blob do lápis gira num ângulo sorteado, e achatado vira risco)
+  const sombra = []; for (let k = 0; k < 36; k++) { const a = k / 36 * TAU; sombra.push([cx + Math.cos(a) * rx, CHAO + 16 + Math.sin(a) * Math.max(4, ry)]); }
+  hatch(ctx, sombra, { rng: r, step: 5, color: TINTA2, alpha: 0.55 - alto * 0.12, w: 1.3, ang: -0.5 });
+  // as notinhas
+  for (const n of NOTAS) nota(r, n.x, n.y + Math.sin((i + n.f) * Math.PI / 4) * 12, n.s, n.d);
+  // riscos de movimento nos quadros de passo e de giro
+  if ([1, 5].includes(i)) for (const k of [0, 1]) wob(ctx, [[cx - 170, 330 + k * 40], [cx - 200, 318 + k * 40]], { w: 2, color: TINTA, rng: r, alpha: 0.7, amp: 0.3, noDust: true });
+  if ([3, 7].includes(i)) for (const k of [0, 1]) wob(ctx, [[cx + 170, 330 + k * 40], [cx + 200, 318 + k * 40]], { w: 2, color: TINTA, rng: r, alpha: 0.7, amp: 0.3, noDust: true });
+  // o giro: dois riscos curvos nos lados do corpo, acima do chão
+  if (i >= 8 && i <= 12) for (const a of [-0.35, Math.PI - 0.05]) wob(ctx, circ(cx, CHAO - 120, 170, 10, 0.07, a), { w: 2.2, color: TINTA2, rng: r, alpha: 0.75, amp: 0.3, noDust: true });
+}
+window.quadro = quadro;
+window.N = QS.length;
+
+document.fonts.ready.then(() => { quadro(0); document.body.dataset.pronto = '1'; });
+</script>
+</body>
+</html>
