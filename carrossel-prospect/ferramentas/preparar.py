@@ -1,10 +1,10 @@
-# preparar.py: tira do filme as telas, os caules das margens e o O de flores.
+# preparar.py: tira do filme os recortes de tela da colagem e o O de flores.
 #
 # Uso: python3 ferramentas/preparar.py <caminho/prospect-feed-celular.mp4>
 # Precisa de ffmpeg no PATH, Pillow e numpy. Tudo sai em telas/ (PNG).
 #
-# O filme é 1080 x 1350 a 24 fps; a moldura das telas é 780 x 760 em x 150, y 190.
-# Quadro = segundos x 24. As telas saem 1:1 (sem ampliar) a não ser onde está dito.
+# O filme é 1080 x 1350 a 24 fps; no filme as telas moram numa moldura de 780 x 760 em x 150, y 190,
+# e os recortes partem dela. Quadro = segundos x 24. Tudo sai 1:1, sem ampliar.
 import subprocess, sys, tempfile, os
 from PIL import Image
 import numpy as np
@@ -33,28 +33,25 @@ def salva(im, nome):
     print(nome, im.size)
 
 
-# 02, 03 e 08 não saem do filme: são réplicas em HTML no carrossel.html (a Conversa e o PowerShell),
-# porque no filme essas telas estão pequenas demais, ou no meio de uma animação, para uma imagem parada.
+# Os slides 02 (o balão do Ponto), 04 (a abertura), 05 (a linha do tempo), 07 (as linhas de
+# instalação) e o preço não saem do filme: são réplicas e tipografia em HTML no carrossel.html,
+# com os mesmos textos da interface.
 
-# 04: a lista de leads com as notas (quadro 316: a lista já rolou e começa na Clínica Ipê, sem a
-# barra de busca cortada em cima), 1:1.
-salva(moldura(316), 'tela-04-leads.png')
+# as linhas da lista de leads, soltas, para a colagem (quadro 316; divisores nas linhas 123, 247,
+# 371, 495, 618 e 742; a lista vai até x 752, antes da barra de rolagem)
+lista = moldura(316)
+cortes = [0, 124, 248, 372, 496, 619, 742]
+nomes = ['ipe', 'sabia', 'aroeira', 'jatoba', 'manaca', 'pitanga']
+for k, nome in enumerate(nomes):
+    if nome in ('jatoba', 'manaca'):
+        continue  # a colagem usa quatro: a melhor nota, duas do meio e a que fica abaixo de 80
+    salva(lista.crop((6, cortes[k], 752, cortes[k + 1])), f'lead-{nome}.png')
 
-# 05: "A conversa" inteira. O quadro 419 tem a abertura já assentada; o 422 é a mesma tela rolada
-# 314 px para baixo, com o gancho. Junta as duas no divisor (linha 242 do 422) e mostra os
-# primeiros 760 px: título, PRIMEIRO, a abertura, o botão, "Já enviei por fora" e a primeira
-# linha do gancho, que termina na linha 743, inteira.
-cima, baixo = moldura(419), moldura(422)
-folha = Image.new('RGB', (780, 314 + 760))
-folha.paste(baixo, (0, 314))
-folha.paste(cima.crop((0, 0, 780, 314 + 242)), (0, 0))
-salva(folha.crop((0, 0, 780, 760)), 'tela-05-conversa.png')
+# o celular no Modo autônomo (quadro 725): o aparelho inteiro, sem o fundo escuro
+salva(moldura(725).crop((224, 20, 556, 740)), 'celular-modo-autonomo.png')
 
-# 06: "O que ele fez" no celular, com a hora de cada envio (quadro 775), 1:1.
-salva(moldura(775), 'tela-06-o-que-ele-fez.png')
-
-# 07: o app no computador, com a barra "prospect BY obliq." (quadro 590), 1:1.
-salva(moldura(590), 'tela-07-computador.png')
+# a janela do app no computador (quadro 590), do canto da janela até a borda do recorte
+salva(moldura(590).crop((172, 56, 780, 760)), 'janela-pc.png')
 
 
 def sem_papel(im, papel=None, limiar=0.975):
@@ -68,11 +65,6 @@ def sem_papel(im, papel=None, limiar=0.975):
     r[claro] = 1
     return Image.fromarray((r * 255).round().astype('uint8'))
 
-
-# os caules das margens, como estão no filme (quadro 300: sem a flor azul)
-q = quadro(300)
-salva(sem_papel(q.crop((0, 300, 130, 840))), 'caule-esq.png')
-salva(sem_papel(q.crop((950, 300, 1080, 840))), 'caule-dir.png')
 
 # o O de flores do fecho (quadro 1296: o O fechado, sem frase dentro)
 salva(sem_papel(quadro(1296).crop((40, 100, 1050, 1080))), 'o-de-flores.png')

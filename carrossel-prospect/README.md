@@ -1,56 +1,54 @@
 # Carrossel do Obliq Prospect
 
-12 slides de 1080 x 1350 (feed 4:5), com a estética e a composição do mini filme
-`prospect-feed-celular.mp4`: a mesma moldura de tela em todo slide, a frase na linha de diário e os
-caules a lápis nas margens.
+11 slides de 1080 x 1350 (feed 4:5) que são **uma folha só**, de 11880 x 1350. O que atravessa a
+borda de um slide continua no seguinte: o "prospecta." da capa termina no slide 2, e um caule a lápis
+corre embaixo do primeiro ao último, com o Ponto andando nele na capa. Cada slide tem a sua própria
+composição: colagem de recortes tortos, tipografia gigante, linha do tempo a lápis, noite cheia.
 
-| slide | frase | na moldura |
-|---|---|---|
-| 01 capa | Você pede. Ele prospecta. | "prospecta." em Fraunces itálico azul, o Ponto procurando |
-| 02 | Você **pede.** | a Conversa vazia com o pedido digitado (réplica em HTML) |
-| 03 | Busca as clínicas. Liga o **modo autônomo.** | o balão do Ponto com os passos e o ajudante (réplica em HTML) |
-| 04 | Avalia **cada uma.** Segue suas regras de venda. | a lista de leads com as notas (quadro 316 do filme) |
-| 05 | Escreve a **abertura.** E deixa o gancho pronto pra resposta. | "A conversa": abertura e gancho (quadros 419 e 422) |
-| 06 | Envia **uma por vez,** no ritmo de uma pessoa. | "O que ele fez" no celular, com a hora de cada envio (quadro 775) |
-| 07 | Roda no seu **computador.** E você acompanha pelo celular. | o app no PC com a barra "prospect BY obliq." (quadro 590) |
-| 08 | Instalar é **uma linha.** Uma pro app, outra pro terminal. | o PowerShell com as duas linhas (réplica em HTML) |
-| 09 | A IA vem **incluída.** Ou use a sua assinatura do Codex. | os planos, na moldura noite |
-| 10 | Os 10 primeiros **travam o preço.** | R$ 39/mês pra sempre, na moldura noite |
-| 11 | Em breve, um agente **24 horas.** O primeiro é grátis. | o agente na nuvem, num cartão de papel (sem tela: ainda não existe) |
-| 12 fecho | Controle total das suas vendas, com o seu **agente pessoal.** | o O de flores, "obliq." com o Ponto no lugar do ponto, e o "testa agora" |
+| slide | o que tem |
+|---|---|
+| 01 capa | "você pede." / "ele" / "prospecta." em Fraunces itálico azul atravessando para o 02; o Ponto com a lupa no caule; "arrasta." |
+| 02 | o pedido num balão grande e o balão do Ponto (passos, ajudante) como impresso torto |
+| 03 | "dá nota pra cada uma.": quatro linhas da lista de leads soltas, o 91 circulado a lápis e a nota "77: abaixo da nota mínima. essa ele não chama." |
+| 04 | a abertura "Oi, boa tarde! É o WhatsApp da Clínica Ipê?" em tipografia gigante, e o gancho em três balões |
+| 05 | "uma por vez.": a linha do tempo a lápis com os envios das 14:07, 14:08, 14:09 e a resposta das 14:12 |
+| 06 | "roda no seu computador.": a janela do app e o celular em colagem |
+| 07 | noite: "instalar é uma linha." com as duas linhas inteiras e o Ponto do terminal |
+| 08 | o plano No seu computador, R$ 49/mês, e o cartão do Grátis |
+| 09 | noite com borda de gravura: os 10 primeiros, R$ 39/mês, pra sempre |
+| 10 | em breve: o agente na nuvem; o caule sobe pela margem e acaba num botão fechado |
+| 11 fecho | o O de flores, "obliq." com o Ponto no lugar do ponto, e o "testa agora" com a linha e o link |
 
 ## Arquivos
 
-- `png/01.png` a `png/12.png`: os slides.
+- `png/01.png` a `png/11.png`: os slides.
 - `prancha-036.png`: todos lado a lado a 0,36, como o feed aparece no celular.
 - `legenda.txt`: a legenda do post.
-- `carrossel.html`: todos os slides numa página (`?s=05` mostra um só). Os textos, preços e
-  posições estão ali.
-- `render.mjs`: fotografa cada slide e monta a prancha. `node render.mjs` (precisa do Playwright:
-  `npm i -D playwright`). No Windows, se o Chromium do Playwright não abrir: `EDGE=1 node render.mjs`
-  (no PowerShell: `$env:EDGE=1; node render.mjs`).
-- `ferramentas/preparar.py`: tira do filme os recortes de `telas/` (as telas 04 a 07, os caules e o
-  O de flores). `python3 ferramentas/preparar.py caminho/prospect-feed-celular.mp4` (ffmpeg, Pillow,
-  numpy).
-- `fontes/`: Fraunces e Hanken variáveis da marca, e a Cascadia Mono (SIL OFL, licença junto) para o
-  PowerShell.
-- `lib/`: `ponto.js` (o mascote, as poses do app), `lapis.js` (o motor do lápis, para a seta da capa e o
-  botão fechado do slide 11) e `papel.svg` (a textura do papel).
+- `carrossel.html`: a folha inteira. Textos, preços, posições e rotações estão ali; `?z=0.36` mostra
+  do tamanho do feed.
+- `render.mjs`: fotografa cada faixa de 1080 px e monta a prancha. `node render.mjs` (precisa do
+  Playwright: `npm i -D playwright`). No Windows, se o Chromium do Playwright não abrir, use o Edge:
+  `$env:EDGE=1; node render.mjs` no PowerShell.
+- `ferramentas/preparar.py`: tira do filme os recortes de `telas/` (as linhas da lista, a janela do
+  PC, o celular e o O de flores). `python3 ferramentas/preparar.py caminho/prospect-feed-celular.mp4`
+  (ffmpeg, Pillow, numpy).
+- `fontes/`: Fraunces e Hanken variáveis da marca, e a Cascadia Mono (SIL OFL, licença junto) para as
+  linhas de comando.
+- `icones/`: os ícones a lápis da casa usados (o aviãozinho e a resposta, na pose parada).
+- `lib/`: `ponto.js` (o mascote, com as poses do app), `lapis.js` (o motor do lápis: o caule, as setas,
+  o círculo, o botão fechado) e `papel.svg` (a textura do papel).
 
-## Conferência (feita no render final)
+## O que continua da marca
 
-- Moldura em x 150, y 190, 780 x 760 nos 10 slides de tela (medida no DOM).
-- Primeira linha da frase com linha de base em y 1115 em todos; 66 px de folga até a etiqueta.
-- Nada nas faixas x < 120 e x > 960 além dos caules (medido nos pixels); o conteúdo fica entre 140 e 940.
-- Azul em três lugares: "prospecta." (01), o acento da interface (02 a 05 e 07) e a flor azul do O (12).
-  O Ponto no lugar do ponto do "obliq." não conta.
-- Papel com média (250, 247.5, 240.5) contra o alvo #FAF7F0 (250, 247, 240).
-- Zero U+2014 e zero U+2013 em slides, legenda e código.
+Papel, tinta e Fraunces/Hanken variáveis; o lápis só nas bordas e nas formas; caixa baixa na voz de
+rede; zero travessão e meia-risca (conferido em todos os arquivos); azul em três lugares:
+"prospecta." (01 e 02), o acento da interface (os recortes e o Ponto em 02, 03, 06 e 07) e a flor
+azul do O (11). O Ponto no lugar do ponto do "obliq." não conta. A noite aparece como interlúdio
+(07 e 09).
 
 ## Antes de publicar
 
-- "Segue suas regras de venda." (04): pela `FATOS.md`, as regras de venda ainda não existem no código.
-- O slide 11 diz "sem depender do seu computador ligado": é o que um agente na nuvem 24 horas implica.
+- O slide 10 diz "sem depender do seu computador ligado": é o que um agente na nuvem 24 horas implica.
   Conferir com o produto quando ele sair.
-- "Vale para o plano No seu computador." (10): o preço de lançamento foi lido como o do plano pago único.
+- "Vale para o plano No seu computador." (09): o preço de lançamento foi lido como o do plano pago único.
 - As linhas de instalação precisam estar no ar no dia.
