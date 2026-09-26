@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Ponto com confete</title>
+<!--
+  O GIF da fatura, versão confete: o Ponto comemorando (a pose "achou" do ponto.js, 22 quadros de 125 ms,
+  a mesma do app: agacha, pula empinado com os braços para cima, a ponta estoura em confete, três vezes,
+  e fica feliz de pé). A cada pulo sai da cabeça dele um punhado de confete a lápis nas tintas dos
+  produtos da casa, que cai girando e some antes de o laço recomeçar.
+
+  ?texto=0 tira a frase de cima. render.mjs chama quadro(i) para cada quadro e fotografa.
+  Papel liso, sem a textura: no GIF ela só pesa e suja a paleta.
+-->
+<link rel="stylesheet" href="fontes/fontes.css">
+<style>
+:root { --papel: #FAF7F0; --tinta: #1B1814; --tinta-2: #5A564D; --azul: #2946D8; --fraunces: 'SOFT' 55, 'opsz' 80; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #D9D4C8; }
+#palco { position: relative; width: 720px; height: 720px; overflow: hidden; background: var(--papel); color: var(--tinta); font-family: 'Hanken Grotesk', sans-serif; -webkit-font-smoothing: antialiased; }
+#palco > * { position: absolute; }
+canvas { left: 0; top: 0; width: 720px; height: 720px; z-index: 2; pointer-events: none; }
+#frase { left: 0; width: 720px; top: 62px; text-align: center; font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 70px; line-height: 1; }
+#frase i { color: var(--azul); }
+#ponto { left: 144px; top: 244px; line-height: 0; }
+#ponto svg { display: block; shape-rendering: crispEdges; }
+.pt-b { fill: var(--azul); } .pt-s { fill: #1E33A8; } .pt-k { fill: var(--tinta); } .pt-g { fill: var(--tinta-2); } .pt-l { fill: #93A8FF; }
+#marca { left: 0; width: 720px; top: 598px; text-align: center; font-family: 'Fraunces', serif; font-weight: 700; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 56px; line-height: 1; }
+#marca i { font-style: normal; color: var(--azul); }
+body.sem-texto #frase { display: none; }
+body.sem-texto #ponto { top: 200px; }
+</style>
+</head>
+<body>
+<div id="palco">
+  <canvas id="lapis"></canvas>
+  <p id="frase">a fatura <i>chegou.</i></p>
+  <span id="ponto"></span>
+  <p id="marca">obliq<i>.</i></p>
+</div>
+<script src="lib/ponto.js"></script>
+<script src="lib/lapis.js"></script>
+<script>
+const semTexto = new URLSearchParams(location.search).get('texto') === '0';
+if (semTexto) document.body.classList.add('sem-texto');
+
+const E = 18;                                   // 18 px por pixel do Ponto
+const QS = window.Ponto.quadrosDe('achou');     // os 22 quadros da comemoração, em SVG
+const ponto = document.getElementById('ponto');
+const TOPO = semTexto ? 200 : 244, CHAO = TOPO + 15 * E;   // os pés pisam na linha 15 da grade
+
+// de cada quadro, onde o Ponto está: a linha mais baixa (pé ou corpo) e a largura, para a sombra
+const MEDIDAS = QS.map((svg) => {
+  let x0 = 99, x1 = -1, y1 = -1;
+  for (const m of svg.matchAll(/x="([\d.]+)" y="([\d.]+)" width="([\d.]+)"/g)) {
+    const x = +m[1], y = +m[2], w = +m[3];
+    x0 = Math.min(x0, x); x1 = Math.max(x1, x + w); y1 = Math.max(y1, y + 1);
+  }
+  // o topo da cabeça: a linha mais alta do corpo e o meio dela (a ponta, no pulo empinado)
+  let ty = 99, tx0 = 0, tx1 = 0;
+  for (const m of svg.matchAll(/class="pt-[bs]" x="([\d.]+)" y="([\d.]+)" width="([\d.]+)"/g)) {
+    const x = +m[1], y = +m[2], w = +m[3];
+    if (y < ty) { ty = y; tx0 = x; tx1 = x + w; } else if (y === ty) { tx0 = Math.min(tx0, x); tx1 = Math.max(tx1, x + w); }
+  }
+  return { x0, x1, y1, ty, tx: (tx0 + tx1) / 2 };
+});
+
+const ESC = 2;
+const c = document.getElementById('lapis'); c.width = 720 * ESC; c.height = 720 * ESC;
+const ctx = c.getContext('2d'); ctx.scale(ESC, ESC);
+
+// o confete: as tintas dos produtos da casa (guideline §2b) e o azul
+const TINTAS = ['#E3A008', '#4F7A2E', '#0F6E72', '#FF8FE9', '#7A2463', '#2946D8', '#C98A00', '#B01C77'];
+const ESTOUROS = [4, 9, 14];          // os quadros em que ele empina e a ponta estoura
+const VIDA = 7, G = 13;                // cada pedaço vive 7 quadros; a gravidade em px por quadro²
+const PEDACOS = ESTOUROS.flatMap((e, k) => {
+  const r = stream(SEED * 41 + k), m = MEDIDAS[e];
+  const ox = 144 + m.tx * E, oy = TOPO + m.ty * E;
+  return Array.from({ length: 34 }, (_, j) => ({
+    e, ox: ox + rd(r, -30, 30), oy: oy + rd(r, -10, 20),
+    vx: rd(r, -38, 38), vy: rd(r, -52, -22), giro: rd(r, -0.9, 0.9), a0: rd(r, 0, TAU),
+    cor: TINTAS[(j + k * 3) % TINTAS.length], fita: ch(r, 0.3), tam: rd(r, 14, 24),
+  }));
+});
+function pedaco(r, p, t) {
+  const x = p.ox + p.vx * t, y = p.oy + p.vy * t + G * t * t / 2, a = p.a0 + p.giro * t;
+  const alfa = t > VIDA - 3 ? (VIDA - t) / 3 : 1;
+  if (p.fita) {                       // a serpentina: um rabisco curto e enrolado
+    const pts = []; for (let k = 0; k <= 6; k++) pts.push([x + Math.cos(a) * k * 4 + Math.sin(k * 1.4 + a) * 5, y + Math.sin(a) * k * 4 + Math.cos(k * 1.4) * 5]);
+    wob(ctx, pts.map(([u, v]) => [x + (u - x) * 1.5, y + (v - y) * 1.5]), { w: 4, color: p.cor, rng: r, alpha: 0.9 * alfa, amp: 0.4, noDust: true });
+    return;
+  }
+  const L = p.tam, c = Math.cos(a), s = Math.sin(a), q = [[-L / 2, -L / 4], [L / 2, -L / 4], [L / 2, L / 4], [-L / 2, L / 4]];
+  const poly = q.map(([u, v]) => [x + u * c - v * s, y + u * s + v * c]);
+  fillPoly(ctx, poly, p.cor, 0.92 * alfa);
+  wob(ctx, poly.concat([poly[0]]), { w: 0.8, color: mistura(p.cor, TINTA, 0.35), rng: r, alpha: 0.6 * alfa, amp: 0.3, noDust: true });
+}
+
+function quadro(i) {
+  ponto.innerHTML = `<svg viewBox="0 0 24 16" width="${24 * E}" height="${16 * E}">${QS[i]}</svg>`;
+  ctx.clearRect(0, 0, 720, 720);
+  const r = stream(SEED * 37 + i);                // o traço vivo: cada quadro, uma variante
+  // o chão
+  wob(ctx, [[150, CHAO + 4], [360, CHAO + 6], [570, CHAO + 3]], { w: 2, color: TINTA, rng: r, alpha: 0.7, amp: 1, noDust: true });
+  // a sombra: embaixo do corpo, menor e mais clara quando ele sobe do chão
+  const m = MEDIDAS[i], alto = 15 - m.y1;
+  const cx = 144 + (m.x0 + m.x1) / 2 * E, rx = (m.x1 - m.x0) / 2 * E * (1 - alto * 0.18), ry = 11 - alto * 3;
+  // (a elipse é deitada de propósito: o blob do lápis gira num ângulo sorteado, e achatado vira risco)
+  const sombra = []; for (let k = 0; k < 36; k++) { const a = k / 36 * TAU; sombra.push([cx + Math.cos(a) * rx, CHAO + 16 + Math.sin(a) * Math.max(4, ry)]); }
+  hatch(ctx, sombra, { rng: r, step: 5, color: TINTA2, alpha: 0.55 - alto * 0.12, w: 1.3, ang: -0.5 });
+  // o confete no ar
+  for (const p of PEDACOS) { const t = i - p.e; if (t >= 0 && t < VIDA) pedaco(r, p, t); }
+}
+window.quadro = quadro;
+window.N = QS.length;
+
+document.fonts.ready.then(() => { quadro(0); document.body.dataset.pronto = '1'; });
+</script>
+</body>
+</html>
