@@ -2,24 +2,22 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=1080">
+<meta name="viewport" content="width=11880">
 <title>Carrossel Prospect</title>
 <!--
-  Carrossel do Obliq Prospect: 12 slides de 1080 x 1350 (feed 4:5).
-  Cada <section class="slide"> vira um PNG (render.mjs). Abrir no navegador mostra todos em coluna;
-  ?s=05 mostra só um.
+  Carrossel do Obliq Prospect, versão panorama: 11 slides de 1080 x 1350 que são UMA folha só
+  (11880 x 1350). O que atravessa a borda de um slide continua no seguinte: o "prospecta." da capa, e o
+  caule a lápis que corre embaixo do primeiro ao último, com o Ponto andando nele.
+  render.mjs fotografa cada faixa de 1080 px. Abrir no navegador mostra a folha inteira; ?z=0.36
+  mostra do tamanho do feed.
 
-  A composição é a do filme, em três camadas fixas:
-    1. a moldura das telas: 780 x 760 em x 150, y 190, raio 10, sombra de tinta; a etiqueta 28 px abaixo;
-    2. a frase na linha de diário: x 160, linha de base 1115, Hanken 400 44 px, uma palavra em Fraunces;
-    3. os caules a lápis nas margens (x < 120 e x > 960), tirados do próprio filme.
-  Azul em três lugares: "prospecta." (capa), o acento da interface do app, a flor azul do O (fecho).
-  O ponto do "obliq." não conta.
+  Regras da marca que continuam valendo: papel, tinta, Fraunces e Hanken variáveis, lápis nas bordas,
+  caixa baixa na voz de rede, nenhum travessão, e azul em três lugares: "prospecta." (capa), o acento
+  da interface do app (nos recortes, no Ponto) e a flor azul do O (fecho). O ponto do "obliq." não conta.
 -->
 <link rel="stylesheet" href="fontes/fontes.css">
 <style>
 @font-face { font-family: 'Cascadia Mono'; font-weight: 400; src: url('fontes/cascadia-mono-400.woff2') format('woff2'); }
-@font-face { font-family: 'Cascadia Mono'; font-weight: 700; src: url('fontes/cascadia-mono-700.woff2') format('woff2'); }
 
 :root {
   --papel: #FAF7F0; --papel-base: #FDFBF5; --papel-2: #F1ECE1;
@@ -31,220 +29,212 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { background: #D9D4C8; }
-body { display: flex; flex-direction: column; align-items: center; gap: 40px; padding: 40px 0; }
-body.um { padding: 0; gap: 0; background: var(--papel); }
-body.um .slide:not(.ativo) { display: none; }
+body { width: 11880px; }
 
-.slide {
-  position: relative; width: 1080px; height: 1350px; overflow: hidden; flex: none;
-  background: url('lib/papel.svg'), var(--papel-base);
-  color: var(--tinta);
+#folha {
+  position: relative; width: 11880px; height: 1350px; overflow: hidden; color: var(--tinta);
   font-family: 'Hanken Grotesk', sans-serif; font-weight: 400;
   -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision;
 }
-.fr { font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; }
+/* o chão de cada slide: papel com textura, creme ou noite */
+.chao { position: absolute; top: 0; width: 1080px; height: 1350px; }
+.chao.papel { background: url('lib/papel.svg'), var(--papel-base); }
+.chao.creme { background: url('lib/papel.svg'), #F4EEE2; }
+.chao.noite { background: var(--noite); }
+canvas.lapis { position: absolute; left: 0; top: 0; width: 11880px; height: 1350px; pointer-events: none; }
 
-/* 3. as margens do lápis (o caule do filme, com o papel dividido fora: multiplica sem emenda) */
-.caule { position: absolute; top: 300px; width: 130px; height: 540px; mix-blend-mode: multiply; pointer-events: none; }
-.caule.esq { left: 0; }
-.caule.dir { left: 950px; }
-canvas.lapis { position: absolute; inset: 0; width: 1080px; height: 1350px; pointer-events: none; mix-blend-mode: multiply; }
+.s { position: absolute; top: 0; width: 1080px; height: 1350px; }
+.s > * { position: absolute; }
 
-/* 1. a moldura das telas */
-.moldura {
-  position: absolute; left: 150px; top: 190px; width: 780px; height: 760px;
-  border-radius: 10px; overflow: hidden; box-shadow: var(--sombra-tinta); background: #F4F1E9;
-}
-.moldura > img { display: block; width: 780px; height: 760px; }
-.etiqueta { position: absolute; left: 150px; top: 978px; font: 500 26px/1 'Hanken Grotesk'; color: var(--tinta-2); }
+/* tipo */
+.t { font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; line-height: 1; }
+.t i { font-style: italic; }
+.rot { font: 700 20px/1 'Hanken Grotesk'; letter-spacing: .22em; text-transform: uppercase; color: var(--tinta-2); }
+.corpo { font-size: 40px; line-height: 54px; }
+.corpo .k { font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 1.06em; }
+.etq { font: 500 22px/1 'Hanken Grotesk'; color: var(--tinta-2); }
+.nota { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-variation-settings: 'SOFT' 55, 'opsz' 18; font-size: 32px; line-height: 40px; color: var(--tinta-2); }
+.noite-t { color: var(--noite-txt); }
+.noite-d { color: var(--noite-dim); }
 
-/* 2. a frase na linha de diário (o JS acerta o topo para a linha de base cair em 1115) */
-.frase { position: absolute; left: 160px; top: 1070px; width: 780px; font-size: 44px; line-height: 58px; white-space: nowrap; }
-.frase .k { font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 1.07em; }
+/* impresso: o recorte de tela como folha solta, com sombra de tinta (guideline §5.4) */
+.impresso { background: #FFFFFF; padding: 7px; border-radius: 7px; box-shadow: var(--sombra-tinta); }
+.impresso img { display: block; border-radius: 3px; }
+.impresso canvas { position: absolute; left: 0; top: 0; pointer-events: none; }
 
-/* o Ponto parado numa pose (ponto.js monta o SVG; aqui ele não anima) */
-.ponto-fixo { display: inline-block; line-height: 0; }
+/* o Ponto parado numa pose (ponto.js) */
+.ponto-fixo { line-height: 0; }
 .ponto-fixo svg { display: block; shape-rendering: crispEdges; }
 .pt-b { fill: var(--azul); } .pt-s { fill: #1E33A8; } .pt-k { fill: var(--tinta); } .pt-g { fill: var(--tinta-2); } .pt-l { fill: #93A8FF; }
 .ponto-tinta .pt-b, .ponto-tinta .pt-s { fill: var(--tinta); }
 .ponto-tinta .pt-l { fill: var(--tinta-2); }
 
-/* ---------- 01 capa ---------- */
-#s01 .sobre { position: absolute; left: 160px; top: 212px; font: 500 34px/48px 'Hanken Grotesk'; color: var(--tinta-2); }
-#s01 .grande {
-  position: absolute; left: 0; width: 1080px; top: 540px; text-align: center;
-  font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-variation-settings: var(--fraunces);
-  letter-spacing: -0.015em; color: var(--azul); font-size: 188px; line-height: 1;
-}
-#s01 .grande { top: 596px; padding-left: 10px; }
-#s01 .ponto-capa { position: absolute; left: 706px; top: 520px; }
-#s01 .nota {
-  position: absolute; left: 404px; top: 548px; transform: rotate(-2.2deg); transform-origin: left top;
-  font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-variation-settings: 'SOFT' 55, 'opsz' 18;
-  font-size: 30px; color: var(--tinta-2);
-}
-#s01 .arrasta { position: absolute; left: 640px; top: 1236px; font: 500 26px/1 'Hanken Grotesk'; color: var(--tinta-2); }
+/* ícone a lápis da casa: tira de 21 poses, a 6 é a parada */
+.il { width: 64px; height: 64px; background-repeat: no-repeat; background-size: auto 100%; background-position: -384px 0; }
 
-/* ---------- 02 a Conversa (réplica da tela do quadro 86 do filme, aproximada) ---------- */
-.conversa { position: relative; width: 780px; height: 760px; background: #F4F1E9; }
-.balao {
-  position: absolute; left: 20px; top: 22px; width: 740px; background: #FDFBFA; border-radius: 8px;
-  border: 1px solid rgba(27,24,20,.06); box-shadow: 0 1px 2px rgba(27,24,20,.05), 0 18px 30px -22px rgba(27,24,20,.35);
-  padding: 22px 26px 8px;
-}
+/* o balão do Ponto (réplica da Conversa do app, quadros 92 e 256 do filme) */
+.balao { width: 740px; background: #FDFBFA; border-radius: 8px; border: 1px solid rgba(27,24,20,.06); padding: 22px 26px 8px; }
 .balao-topo { display: flex; align-items: center; gap: 14px; height: 36px; }
 .balao-topo .rotulo { font: 600 18px/1 'Hanken Grotesk'; letter-spacing: .12em; color: #8A867D; }
 .balao-topo .assin { margin-left: auto; font-family: 'Fraunces', serif; font-weight: 700; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 26px; }
 .balao-topo .assin i { font-style: normal; color: var(--azul); }
-.balao .fala { margin-top: 14px; font-size: 25px; line-height: 38px; color: #2A2723; }
-.comecos { list-style: none; margin-top: 22px; }
-.comecos li { display: grid; grid-template-columns: 44px 1fr 30px; align-items: center; column-gap: 14px; padding: 18px 0; border-top: 1px solid #E5E3DF; }
-.comecos svg { width: 28px; height: 28px; stroke: var(--tinta); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.comecos .seta svg { width: 26px; height: 26px; stroke: #8A867D; stroke-width: 1.8; }
-.comecos b { display: block; font-weight: 500; font-size: 23px; line-height: 30px; color: #1F1C18; }
-.comecos small { display: block; font-size: 19px; line-height: 26px; color: #8A867D; margin-top: 2px; }
-.entrada { position: absolute; left: 20px; right: 20px; bottom: 24px; border-top: 1px solid #E2DED6; padding-top: 22px; display: flex; align-items: flex-end; gap: 16px; }
-.entrada .campo { flex: 1; font-size: 24px; line-height: 34px; color: #1F1C18; padding-bottom: 10px; border-bottom: 2px solid #232018; }
-.entrada .cursor { display: inline-block; width: 2px; height: 28px; background: #1F1C18; vertical-align: -5px; margin-left: 1px; }
-.entrada .enviar { width: 60px; height: 60px; border-radius: 50%; background: #1B1814; display: grid; place-items: center; flex: none; }
-.entrada .enviar svg { width: 26px; height: 26px; stroke: #FAF7F0; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-/* a Conversa trabalhando (réplica dos quadros 92 e 256 do filme, no estado final) */
-.pedido { position: absolute; right: 20px; top: 22px; max-width: 540px; background: #EBE6DC; border: 1px solid rgba(27,24,20,.07); border-radius: 6px; padding: 13px 18px; font-size: 23px; line-height: 33px; color: #1F1C18; }
+.balao .fala { margin-top: 12px; font-size: 25px; line-height: 38px; color: #2A2723; }
 .passos { list-style: none; margin-top: 12px; }
 .passos li { display: flex; align-items: center; gap: 14px; font-size: 23px; line-height: 40px; color: #6E6A62; }
-.passos svg { width: 26px; height: 26px; stroke: var(--tinta); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-.ajudante { margin: 18px 0 18px; }
-.ajudante .ponto-fixo { margin-left: 22px; }
-.ajudante .cartao { display: flex; align-items: center; gap: 16px; border: 1px solid #E2E0DB; border-radius: 10px; padding: 18px 20px; font-size: 23px; color: #1F1C18; background: #FDFBFA; }
-.ajudante .cartao svg { width: 28px; height: 28px; stroke: var(--tinta); fill: none; stroke-width: 2.2; stroke-linecap: round; flex: none; }
-.entrada .campo.vazio { color: #8A867D; }
+.passos svg, .cartao svg { width: 26px; height: 26px; stroke: var(--tinta); fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.ajudante { margin: 16px 0 18px; }
+.ajudante .ponto-fixo { margin-left: 22px; display: inline-block; }
+.cartao { display: flex; align-items: center; gap: 16px; border: 1px solid #E2E0DB; border-radius: 10px; padding: 18px 20px; font-size: 23px; color: #1F1C18; background: #FDFBFA; }
 
-/* ---------- 08 o PowerShell (réplica do quadro 1050, com as quebras em palavra inteira) ---------- */
-.terminal { width: 780px; height: 760px; background: #0C0C0C; color: #CCCCCC; }
-.terminal .barra { height: 46px; background: #1F1F1D; display: flex; justify-content: flex-end; }
-.terminal .barra span { width: 64px; display: grid; place-items: center; }
-.terminal .barra svg { width: 16px; height: 16px; stroke: #D8D8D8; stroke-width: 1.2; fill: none; }
-.terminal pre { font-family: 'Cascadia Mono', monospace; font-size: 20px; line-height: 29px; padding: 16px 0 0 14px; white-space: pre; }
-.terminal .cmd { color: #F2F2F2; }
-.terminal .b { color: #F2F2F2; font-weight: 700; }
-.terminal .g { color: #767676; }
-.terminal .v { color: #16C60C; }
-.terminal .bloco { display: inline-block; width: 12px; height: 26px; background: #F2F2F2; vertical-align: -6px; }
+/* ---------- 01 capa ---------- */
+#s01 .sobre { left: 92px; top: 92px; font: 500 32px/1 'Hanken Grotesk'; color: var(--tinta-2); }
+#s01 .pede { left: 80px; top: 150px; font-size: 196px; }
+#s01 .ele { left: 94px; top: 440px; font-size: 56px; }
+#s01 .prospecta { left: 64px; top: 500px; font-size: 318px; font-style: italic; color: var(--azul); white-space: nowrap; }
+#s01 .sub { left: 94px; top: 910px; width: 820px; }
+#s01 .ponto-capa { left: 150px; top: 1190px; }
+#s01 .arrasta { left: 846px; top: 1166px; font: 500 28px/1 'Hanken Grotesk'; color: var(--tinta-2); }
 
-/* ---------- 09, 10 o preço: a moldura vira noite (o interlúdio do filme também mora nela) ---------- */
-.noite { width: 780px; height: 760px; background: var(--noite); color: var(--noite-txt); padding: 50px 54px; position: relative; }
-.olho { font: 700 18px/1 'Hanken Grotesk'; letter-spacing: .22em; text-transform: uppercase; color: var(--noite-dim); }
-.plano { border-top: 1px solid var(--noite-linha); padding: 34px 0 34px; display: grid; grid-template-columns: 1fr auto; column-gap: 24px; align-items: baseline; }
-.plano:first-of-type { margin-top: 30px; }
-.plano h3 { font-family: 'Fraunces', serif; font-weight: 500; font-variation-settings: 'SOFT' 55, 'opsz' 40; font-size: 40px; line-height: 1.1; letter-spacing: -0.01em; }
-.plano .valor { font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); font-size: 60px; line-height: 1; letter-spacing: -0.015em; white-space: nowrap; }
-.plano .valor small { font: 500 24px/1 'Hanken Grotesk'; color: var(--noite-dim); letter-spacing: 0; margin-left: 4px; }
-.plano p { grid-column: 1 / -1; margin-top: 14px; font-size: 27px; line-height: 39px; color: #D9D8D2; }
-.plano p .dim { color: var(--noite-dim); }
-.anual { border-top: 1px solid var(--noite-linha); padding-top: 30px; display: flex; justify-content: space-between; align-items: baseline; font-size: 27px; }
-.anual b { font-weight: 500; }
-.anual span { color: var(--noite-dim); }
+/* ---------- 02 o pedido ---------- */
+#s02 .pedido {
+  left: 160px; top: 110px; width: 850px; transform: rotate(-1.6deg); transform-origin: left top;
+  background: #EBE6DC; border: 1px solid rgba(27,24,20,.08); border-radius: 10px; padding: 26px 32px;
+  font-size: 46px; line-height: 62px; color: #1F1C18; box-shadow: var(--sombra-tinta);
+}
+#s02 .impresso { left: 306px; top: 470px; transform: rotate(2.4deg); transform-origin: left top; }
+#s02 .sub { left: 94px; top: 1004px; width: 900px; }
+#s02 .etq { left: 94px; top: 1130px; }
 
-.oferta { position: absolute; inset: 22px; border: 1px solid rgba(244,241,232,.25); padding: 6px; }
-.oferta .dentro { position: absolute; inset: 6px; border: 1px solid var(--noite-linha); padding: 48px 50px; display: flex; flex-direction: column; }
-.oferta .preco { margin-top: 64px; display: flex; align-items: baseline; gap: 16px; white-space: nowrap; }
-.oferta .preco .rs { font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); font-size: 214px; line-height: .8; letter-spacing: -0.03em; }
-.oferta .preco .mes { font: 500 34px/1 'Hanken Grotesk'; color: var(--noite-dim); }
-.oferta .sempre { margin-top: 26px; font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-variation-settings: var(--fraunces); font-size: 84px; line-height: 1; letter-spacing: -0.015em; }
-.oferta .quem { margin-top: auto; border-top: 1px solid var(--noite-linha); padding-top: 26px; font-size: 30px; line-height: 40px; }
-.oferta .quem span { color: var(--noite-dim); }
+/* ---------- 03 a nota ---------- */
+#s03 .titulo { left: 84px; top: 86px; font-size: 118px; }
+#s03 .lead { transform-origin: left top; }
+#s03 .lead img { width: 790px; }
+#s03 .l1 { left: 96px; top: 390px; transform: rotate(-2.4deg); }
+#s03 .l2 { left: 160px; top: 552px; transform: rotate(1.7deg); }
+#s03 .l3 { left: 104px; top: 712px; transform: rotate(-0.9deg); }
+#s03 .l4 { left: 214px; top: 900px; transform: rotate(3.4deg); }
+#s03 .nota { left: 300px; top: 1112px; transform: rotate(-2deg); transform-origin: left top; }
+#s03 .etq { right: 94px; top: 90px; text-align: right; }
 
-/* ---------- 11 em breve: um cartão de papel, sem tela (a nuvem ainda não existe) ---------- */
-.breve { width: 780px; height: 760px; background: var(--papel-2); padding: 50px 54px; color: var(--tinta); }
-.breve .olho { color: var(--tinta-2); }
-.breve h3 { margin-top: 34px; font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); font-size: 88px; line-height: .98; letter-spacing: -0.02em; }
-.breve .sub { margin-top: 20px; font-size: 28px; line-height: 38px; color: var(--tinta-2); }
-.breve dl { margin-top: 40px; }
-.breve dl div { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--linha); padding: 22px 0; font-size: 28px; line-height: 36px; }
-.breve dl div:last-child { border-bottom: 1px solid var(--linha); }
-.breve dd { font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); font-size: 36px; letter-spacing: -0.015em; white-space: nowrap; }
+/* ---------- 04 a abertura ---------- */
+#s04 .rot1 { left: 92px; top: 120px; }
+#s04 .etq { left: 94px; top: 1204px; }
+#s04 .abertura { left: 84px; top: 166px; width: 930px; font-size: 118px; line-height: 1.02; }
+#s04 .rot2 { left: 92px; top: 620px; }
+#s04 .gancho { background: #FDFBFA; border-radius: 12px; padding: 20px 28px; font-size: 32px; line-height: 44px; color: #1F1C18; box-shadow: var(--sombra-tinta); transform-origin: left top; }
+#s04 .g1 { left: 90px; top: 668px; transform: rotate(-1.2deg); }
+#s04 .g2 { left: 150px; top: 792px; transform: rotate(0.9deg); }
+#s04 .g3 { left: 106px; top: 954px; transform: rotate(-0.6deg); }
+#s04 .sub { left: 94px; top: 1066px; width: 900px; }
 
-/* ---------- 12 fecho: o O, a marca e o "testa agora" ---------- */
-#s12 .o { position: absolute; left: 180px; top: 44px; width: 720px; mix-blend-mode: multiply; }
-#s12 .dentro-o { position: absolute; left: 0; width: 1080px; top: 336px; text-align: center; font-size: 32px; line-height: 46px; }
-#s12 .dentro-o .k { font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 1.07em; }
-#s12 .marca { position: absolute; left: 0; width: 1080px; top: 766px; display: flex; justify-content: center; align-items: baseline; }
-#s12 .marca .obliq { font-family: 'Fraunces', serif; font-weight: 700; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 132px; line-height: 1; }
-#s12 .marca .ponto-fixo { margin-left: 2px; }
-#s12 .testa { position: absolute; left: 0; width: 1080px; top: 966px; text-align: center; }
-#s12 .testa .chamada { font-size: 34px; line-height: 44px; }
-#s12 .testa .chamada .k { font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 1.07em; }
-#s12 .testa .onde { margin-top: 22px; font: 500 24px/1 'Hanken Grotesk'; color: var(--tinta-2); }
-#s12 .testa code { display: inline-block; margin-top: 14px; padding: 16px 22px; border-radius: 8px; background: var(--papel-2); border: 1px solid var(--linha); font: 400 20px/1 'Cascadia Mono', monospace; color: var(--tinta); }
-#s12 .testa .link { margin-top: 26px; font-size: 26px; color: var(--tinta-2); }
-#s12 .testa .link b { font-weight: 500; color: var(--tinta); }
+/* ---------- 05 o ritmo ---------- */
+#s05 .titulo { left: 84px; top: 96px; font-size: 156px; }
+#s05 .sub { left: 94px; top: 280px; }
+#s05 .hora { left: 40px; width: 150px; text-align: right; font-family: 'Fraunces', serif; font-weight: 500; font-variation-settings: 'SOFT' 55, 'opsz' 40; font-size: 40px; line-height: 1; }
+#s05 .ev { left: 300px; width: 730px; font-size: 31px; line-height: 42px; }
+#s05 .ev b { font-weight: 500; }
+#s05 .il { left: 204px; }
+#s05 .etq { left: 300px; top: 1196px; }
+
+/* ---------- 06 onde roda ---------- */
+#s06 .titulo { left: 84px; top: 96px; font-size: 128px; }
+#s06 .etq { right: 94px; top: 108px; text-align: right; }
+#s06 .pc { left: 70px; top: 400px; transform: rotate(-3deg); transform-origin: left top; }
+#s06 .pc img { width: 560px; }
+#s06 .cel { left: 606px; top: 356px; transform: rotate(4deg); transform-origin: left top; border-radius: 40px; background: #1B1814; padding: 9px; }
+#s06 .cel img { width: 300px; border-radius: 32px; }
+#s06 .sub { left: 94px; top: 1082px; width: 900px; }
+
+/* ---------- 07 instalar (noite) ---------- */
+#s07 .titulo { left: 84px; top: 140px; font-size: 140px; }
+#s07 .ponto-fixo { left: 780px; top: 150px; }
+#s07 .rotulo-l { left: 92px; font: 500 28px/1 'Hanken Grotesk'; color: var(--noite-dim); }
+#s07 .linha { left: 84px; width: 912px; padding: 26px 28px; border-radius: 10px; background: #151822; border: 1px solid var(--noite-linha); font: 400 26px/1 'Cascadia Mono', monospace; color: var(--noite-txt); white-space: pre; }
+#s07 .sub { left: 94px; top: 1030px; width: 900px; }
+
+/* ---------- 08 o plano ---------- */
+#s08 .rot1 { left: 92px; top: 110px; }
+#s08 .nome { left: 90px; top: 150px; font-family: 'Fraunces', serif; font-weight: 500; font-variation-settings: 'SOFT' 55, 'opsz' 40; font-size: 60px; line-height: 1; }
+#s08 .preco { left: 76px; top: 236px; display: flex; align-items: baseline; gap: 28px; white-space: nowrap; }
+#s08 .preco .rs { font-size: 110px; align-self: flex-start; margin-top: 8px; }
+#s08 .preco .t:not(.rs) { font-size: 330px; line-height: .8; letter-spacing: -0.03em; }
+#s08 .preco span:last-child { font: 500 44px/1 'Hanken Grotesk'; color: var(--tinta-2); }
+#s08 ul { left: 90px; top: 560px; width: 900px; list-style: none; }
+#s08 li { border-top: 1px solid var(--linha); padding: 22px 0; font-size: 36px; line-height: 46px; }
+#s08 li:last-child { border-bottom: 1px solid var(--linha); }
+#s08 li .d { color: var(--tinta-2); }
+#s08 .gratis { left: 540px; top: 1000px; width: 450px; background: var(--papel-2); border-radius: 6px; padding: 22px 26px; transform: rotate(2.6deg); box-shadow: var(--sombra-tinta); }
+#s08 .gratis .t { font-size: 40px; }
+#s08 .gratis p { margin-top: 10px; font-size: 24px; line-height: 32px; color: var(--tinta-2); }
+#s08 .quem-gratis { left: 94px; top: 1040px; width: 420px; }
+
+/* ---------- 09 lançamento (noite, com a borda dupla de gravura) ---------- */
+#s09 .aro { left: 36px; top: 36px; width: 1008px; height: 1278px; border: 1px solid rgba(244,241,232,.25); }
+#s09 .aro2 { left: 43px; top: 43px; width: 994px; height: 1264px; border: 1px solid var(--noite-linha); }
+#s09 .rot1 { left: 120px; top: 140px; color: var(--noite-dim); }
+#s09 .quem { left: 120px; top: 196px; font: 500 52px/1 'Hanken Grotesk'; color: var(--noite-txt); }
+#s09 .preco { left: 104px; top: 300px; display: flex; align-items: baseline; gap: 26px; white-space: nowrap; }
+#s09 .preco .rs { font-size: 130px; align-self: flex-start; margin-top: 10px; color: var(--noite-txt); }
+#s09 .preco .t:not(.rs) { font-size: 420px; line-height: .8; letter-spacing: -0.03em; color: var(--noite-txt); }
+#s09 .preco span:last-child { font: 500 48px/1 'Hanken Grotesk'; color: var(--noite-dim); }
+#s09 .sempre { left: 112px; top: 720px; font-size: 176px; color: var(--noite-txt); }
+#s09 .sub { left: 120px; top: 1010px; width: 840px; }
+
+/* ---------- 10 em breve ---------- */
+#s10 .rot1 { left: 92px; top: 110px; }
+#s10 .titulo { left: 84px; top: 150px; font-size: 150px; }
+#s10 .sub { left: 94px; top: 480px; width: 860px; color: var(--tinta-2); }
+#s10 dl { left: 90px; top: 650px; width: 880px; }
+#s10 dl div { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--linha); padding: 26px 0; font-size: 36px; line-height: 44px; }
+#s10 dl div:last-child { border-bottom: 1px solid var(--linha); }
+#s10 dd { font-family: 'Fraunces', serif; font-weight: 600; font-variation-settings: var(--fraunces); font-size: 52px; letter-spacing: -0.015em; white-space: nowrap; }
+
+/* ---------- 11 fecho ---------- */
+#s11 .o { left: 214px; top: 36px; width: 652px; mix-blend-mode: multiply; }
+#s11 .dentro-o { left: 0; width: 1080px; top: 290px; text-align: center; font-size: 30px; line-height: 44px; }
+#s11 .marca { left: 0; width: 1080px; top: 700px; display: flex; justify-content: center; align-items: baseline; }
+#s11 .marca .obliq { font-family: 'Fraunces', serif; font-weight: 700; font-variation-settings: var(--fraunces); letter-spacing: -0.015em; font-size: 136px; line-height: 1; }
+#s11 .testa { left: 0; width: 1080px; top: 900px; text-align: center; }
+#s11 .testa .corpo { font-size: 38px; }
+#s11 .testa .onde { margin-top: 20px; font: 500 24px/1 'Hanken Grotesk'; color: var(--tinta-2); }
+#s11 .testa code { display: inline-block; margin-top: 14px; padding: 16px 22px; border-radius: 8px; background: var(--papel-2); border: 1px solid var(--linha); font: 400 22px/1 'Cascadia Mono', monospace; color: var(--tinta); }
+#s11 .testa .link { margin-top: 24px; font-size: 28px; color: var(--tinta-2); }
+#s11 .testa .link b { font-weight: 500; color: var(--tinta); }
 </style>
 </head>
 <body>
+<div id="folha">
+  <div class="chao papel" style="left:0"></div>
+  <div class="chao papel" style="left:1080px"></div>
+  <div class="chao papel" style="left:2160px"></div>
+  <div class="chao creme" style="left:3240px"></div>
+  <div class="chao papel" style="left:4320px"></div>
+  <div class="chao papel" style="left:5400px"></div>
+  <div class="chao noite" style="left:6480px"></div>
+  <div class="chao papel" style="left:7560px"></div>
+  <div class="chao noite" style="left:8640px"></div>
+  <div class="chao creme" style="left:9720px"></div>
+  <div class="chao papel" style="left:10800px"></div>
 
-<!-- 01 capa: sem moldura -->
-<section class="slide" id="s01">
-  <img class="caule esq" src="telas/caule-esq.png" alt="">
-  <img class="caule dir" src="telas/caule-dir.png" alt="">
-  <p class="sobre">pra quem vende landing page.<br>e, em breve, micro-SaaS.</p>
-  <span class="nota">ele já tá procurando.</span>
-  <span class="ponto-fixo ponto-tinta ponto-capa" data-pose="procurando" data-q="3" data-escala="8"></span>
-  <p class="grande">prospecta.</p>
-  <p class="frase">Você pede. Ele prospecta.</p>
-  <span class="arrasta">arrasta pro lado.</span>
-  <canvas class="lapis" data-desenho="seta-capa"></canvas>
-</section>
+  <!-- o caule a lápis que atravessa a folha inteira (desenhado pelo lapis.js, semente fixa) -->
+  <canvas class="lapis" id="caule"></canvas>
 
-<!-- 02 você pede -->
-<section class="slide" id="s02">
-  <img class="caule esq" src="telas/caule-esq.png" alt="">
-  <img class="caule dir" src="telas/caule-dir.png" alt="">
-  <div class="moldura">
-    <div class="conversa">
+  <!-- 01 capa -->
+  <section class="s" id="s01" style="left:0">
+    <p class="sobre">pra quem vende landing page.</p>
+    <p class="t pede">você pede.</p>
+    <p class="corpo ele">ele</p>
+    <p class="t prospecta">prospecta.</p>
+    <p class="corpo sub">busca os negócios, dá nota pra cada um, escreve a primeira mensagem e manda no WhatsApp.</p>
+    <span class="ponto-fixo ponto-tinta ponto-capa" data-pose="procurando" data-q="3" data-escala="7"></span>
+    <p class="arrasta">arrasta.</p>
+  </section>
+
+  <!-- 02 o pedido -->
+  <section class="s" id="s02" style="left:1080px">
+    <div class="pedido">Busca 30 clínicas sem site em Sorocaba e fala com as melhores.</div>
+    <div class="impresso">
       <div class="balao">
-        <div class="balao-topo">
-          <span class="ponto-fixo" data-pose="parado" data-q="0" data-escala="2.5"></span>
-          <span class="rotulo">PONTO</span>
-          <span class="assin">obliq<i>.</i></span>
-        </div>
-        <p class="fala">Boa tarde, Marina. Eu busco, escrevo e preparo os envios; mandar, só com o seu ok. Por onde a gente começa?</p>
-        <ul class="comecos">
-          <li>
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-            <div><b>Buscar negócios sem site na minha cidade</b><small>Diga o ramo e a cidade que ele começa</small></div>
-            <span class="seta"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 16v-3M12 16v-6M16 16v-4M3 8h18"/></svg>
-            <div><b>Como foi a semana no WhatsApp?</b><small>Enviadas, respostas e quem pediu para parar</small></div>
-            <span class="seta"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24"><path d="M14.5 21.7a.5.5 0 0 0 .9 0l6.5-19a.5.5 0 0 0-.6-.6l-19 6.5a.5.5 0 0 0 0 .9l7.9 3.2a2 2 0 0 1 1.1 1.1z"/><path d="m21.9 2.1-11 11"/></svg>
-            <div><b>Preparar o envio dos que já têm mensagem</b><small>Você confere e confirma antes de sair</small></div>
-            <span class="seta"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
-          </li>
-        </ul>
-      </div>
-      <div class="entrada">
-        <div class="campo">Busca 30 clínicas sem site em Sorocaba e fala com as melhores.<span class="cursor"></span></div>
-        <span class="enviar"><svg viewBox="0 0 24 24"><path d="M14.5 21.7a.5.5 0 0 0 .9 0l6.5-19a.5.5 0 0 0-.6-.6l-19 6.5a.5.5 0 0 0 0 .9l7.9 3.2a2 2 0 0 1 1.1 1.1z"/><path d="m21.9 2.1-11 11"/></svg></span>
-      </div>
-    </div>
-  </div>
-  <p class="etiqueta">prospect. dados de exemplo.</p>
-  <p class="frase">Você <span class="k">pede.</span></p>
-</section>
-
-<!-- 03 busca e liga o autônomo -->
-<section class="slide" id="s03">
-  <img class="caule esq" src="telas/caule-esq.png" alt="">
-  <img class="caule dir" src="telas/caule-dir.png" alt="">
-  <div class="moldura">
-    <div class="conversa">
-      <div class="pedido">Busca 30 clínicas sem site em Sorocaba e fala com as melhores.</div>
-      <div class="balao" style="top: 144px">
         <div class="balao-topo">
           <span class="ponto-fixo" data-pose="parado" data-q="0" data-escala="2.5"></span>
           <span class="rotulo">PONTO</span>
@@ -260,171 +250,132 @@ canvas.lapis { position: absolute; inset: 0; width: 1080px; height: 1350px; poin
           <div class="cartao"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Acompanhando a busca de clínicas em Sorocaba</div>
         </div>
       </div>
-      <div class="entrada">
-        <div class="campo vazio">Peça ao Ponto o que quiser</div>
-        <span class="enviar"><svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1.5" fill="#FAF7F0" stroke="none"/></svg></span>
-      </div>
     </div>
-  </div>
-  <p class="etiqueta">prospect. dados de exemplo.</p>
-  <p class="frase">Busca as clínicas.<br>Liga o <span class="k">modo autônomo.</span></p>
-</section>
+    <p class="corpo sub">você pede em português, do seu jeito. ele chama um ajudante e liga o <span class="k">modo autônomo.</span></p>
+    <p class="etq">prospect. dados de exemplo.</p>
+  </section>
 
-<!-- 04 avalia cada uma -->
-<section class="slide" id="s04">
-  <img class="caule esq" src="telas/caule-esq.png" alt="">
-  <img class="caule dir" src="telas/caule-dir.png" alt="">
-  <div class="moldura"><img src="telas/tela-04-leads.png" alt=""></div>
-  <p class="etiqueta">prospect. dados de exemplo.</p>
-  <p class="frase">Avalia <span class="k">cada uma.</span><br>Segue suas regras de venda.</p>
-</section>
+  <!-- 03 a nota -->
+  <section class="s" id="s03" style="left:2160px">
+    <p class="t titulo">dá nota pra<br>cada uma.</p>
+    <p class="etq">prospect. dados de exemplo.</p>
+    <div class="impresso lead l1" data-lapis="circulo"><img src="telas/lead-ipe.png" alt=""></div>
+    <div class="impresso lead l2"><img src="telas/lead-sabia.png" alt=""></div>
+    <div class="impresso lead l3"><img src="telas/lead-aroeira.png" alt=""></div>
+    <div class="impresso lead l4"><img src="telas/lead-pitanga.png" alt=""></div>
+    <p class="nota">77: abaixo da nota mínima. essa ele não chama.</p>
+  </section>
 
-<!-- 05 escreve a abertura -->
-<section class="slide" id="s05">
-  <img class="caule esq" src="telas/caule-esq.png" alt="">
-  <img class="caule dir" src="telas/caule-dir.png" alt="">
-  <div class="moldura"><img src="telas/tela-05-conversa.png" alt=""></div>
-  <p class="etiqueta">prospect. dados de exemplo.</p>
-  <p class="frase">Escreve a <span class="k">abertura.</span><br>E deixa o gancho pronto pra resposta.</p>
-</section>
+  <!-- 04 a abertura -->
+  <section class="s" id="s04" style="left:3240px">
+    <p class="rot rot1">primeiro</p>
+    <p class="etq">prospect. dados de exemplo.</p>
+    <p class="t abertura">Oi, boa tarde! É o WhatsApp da Clínica Ipê?</p>
+    <p class="rot rot2">quando responderem</p>
+    <p class="gancho g1">Eu faço sites para clínicas aqui de Sorocaba.</p>
+    <p class="gancho g2">Procurei vocês no Google e não achei site,<br>só o endereço no mapa.</p>
+    <p class="gancho g3">Hoje os pacientes chegam mais pelo WhatsApp mesmo?</p>
+    <p class="corpo sub">ele escreve a <span class="k">abertura.</span> o gancho fica guardado pra quando responderem.</p>
+  </section>
 
-<!-- 06 envia uma por vez -->
-<section class="slide" id="s06">
-  <img class="caule esq" src="telas/caule-esq.png" alt="">
-  <img class="caule dir" src="telas/caule-dir.png" alt="">
-  <div class="moldura"><img src="telas/tela-06-o-que-ele-fez.png" alt=""></div>
-  <p class="etiqueta">prospect no celular. dados de exemplo.</p>
-  <p class="frase">Envia <span class="k">uma por vez,</span><br>no ritmo de uma pessoa.</p>
-</section>
+  <!-- 05 o ritmo -->
+  <section class="s" id="s05" style="left:4320px">
+    <p class="t titulo">uma por vez.</p>
+    <p class="corpo sub">no ritmo de uma pessoa, nunca no mesmo compasso.</p>
+    <p class="hora" style="top:452px">14:07</p>
+    <span class="il" style="top:440px;background-image:url(icones/aviao-64.svg)"></span>
+    <p class="ev" style="top:446px">enviou a abertura para <b>Fisio Aroeira</b> (nota 86).</p>
+    <p class="hora" style="top:602px">14:08</p>
+    <span class="il" style="top:590px;background-image:url(icones/aviao-64.svg)"></span>
+    <p class="ev" style="top:596px">enviou a abertura para <b>Clínica Jatobá</b> (nota 84).</p>
+    <p class="hora" style="top:752px">14:09</p>
+    <span class="il" style="top:740px;background-image:url(icones/aviao-64.svg)"></span>
+    <p class="ev" style="top:746px">enviou a abertura para <b>Estética Manacá</b> (nota 82).</p>
+    <p class="hora" style="top:1052px">14:12</p>
+    <span class="il" style="top:1040px;background-image:url(icones/resposta-64.svg)"></span>
+    <p class="ev" style="top:1046px"><b>Clínica Ipê</b> respondeu. ele mandou o gancho.</p>
+    <p class="etq">prospect, o que ele fez. dados de exemplo.</p>
+  </section>
 
-<!-- 07 roda no computador -->
-<section class="slide" id="s07">
-  <img class="caule esq" src="telas/caule-esq.png" alt="">
-  <img class="caule dir" src="telas/caule-dir.png" alt="">
-  <div class="moldura"><img src="telas/tela-07-computador.png" alt=""></div>
-  <p class="etiqueta">prospect. dados de exemplo.</p>
-  <p class="frase">Roda no seu <span class="k">computador.</span><br>E você acompanha pelo celular.</p>
-</section>
+  <!-- 06 onde roda -->
+  <section class="s" id="s06" style="left:5400px">
+    <p class="t titulo">roda no seu<br>computador.</p>
+    <p class="etq">prospect. dados de exemplo.</p>
+    <div class="impresso pc"><img src="telas/janela-pc.png" alt=""></div>
+    <div class="impresso cel"><img src="telas/celular-modo-autonomo.png" alt=""></div>
+    <p class="corpo sub">fechou a janela, ele segue. e você acompanha pelo <span class="k">celular.</span></p>
+  </section>
 
-<!-- 08 instalar é uma linha -->
-<section class="slide" id="s08">
-  <img class="caule esq" src="telas/caule-esq.png" alt="">
-  <img class="caule dir" src="telas/caule-dir.png" alt="">
-  <div class="moldura">
-    <div class="terminal">
-      <div class="barra">
-        <span><svg viewBox="0 0 16 16"><path d="M3 8h10"/></svg></span>
-        <span><svg viewBox="0 0 16 16"><rect x="3" y="3" width="10" height="10"/></svg></span>
-        <span><svg viewBox="0 0 16 16"><path d="M3 3l10 10M13 3 3 13"/></svg></span>
-      </div>
-<pre><span class="cmd">PS C:\&gt; irm https://prospect.obliqstudios.com.br/instalar | iex</span>
+  <!-- 07 instalar -->
+  <section class="s" id="s07" style="left:6480px">
+    <p class="t titulo noite-t">instalar é<br><i>uma linha.</i></p>
+    <span class="ponto-fixo" data-pose="parado" data-q="0" data-escala="9"></span>
+    <p class="rotulo-l" style="top:560px">o app, no PowerShell do Windows:</p>
+    <p class="linha" style="top:606px">irm https://prospect.obliqstudios.com.br/instalar | iex</p>
+    <p class="rotulo-l" style="top:776px">o terminal, com o comando <span style="color:var(--noite-txt)">prospect</span>:</p>
+    <p class="linha" style="top:822px">irm https://prospect.obliqstudios.com.br/terminal | iex</p>
+    <p class="corpo sub noite-t">depois, entre com o seu usuário e o agente liga sozinho.</p>
+  </section>
 
-  <span class="b">prospect by obliq.</span>
-<span class="g">  Instalando o app. Leva uns 2 minutos, sem janela:
-  acompanhe por aqui.
-
-  Baixando a versão 0.1.7 (169 MB)...
-  Conferido.
-  Instalando....................... 46 s</span>
-
-<span class="v">  Pronto. Abrindo o Obliq Prospect: entre com o seu
-  usuário e o agente liga sozinho.</span>
-
-<span class="cmd">PS C:\&gt; irm https://prospect.obliqstudios.com.br/terminal | iex</span>
-
-  <span class="b">prospect by obliq.</span>
-<span class="v">  Pronto. Abra um terminal novo e digite: prospect</span>
-<span class="g">  Na primeira vez ele pergunta o seu usuário e a senha.</span>
-
-<span class="cmd">PS C:\&gt; </span><span class="bloco"></span></pre>
+  <!-- 08 o plano -->
+  <section class="s" id="s08" style="left:7560px">
+    <p class="rot rot1">o plano</p>
+    <p class="nome">No seu computador</p>
+    <p class="preco"><span class="t rs">R$</span><span class="t">49</span><span>/mês</span></p>
+    <ul>
+      <li>a IA vem incluída: <span class="d">até 1.000&nbsp;leads por mês.</span></li>
+      <li>agentes e WhatsApps no seu PC, <span class="d">quantos quiser.</span></li>
+      <li>prefere a sua IA? <span class="d">use o Codex ou a sua chave.</span></li>
+      <li>anual: 10× o mensal. <span class="d">dois meses de graça.</span></li>
+    </ul>
+    <p class="corpo quem-gratis">quer ver antes? começa no <span class="k">grátis.</span></p>
+    <div class="gratis">
+      <p class="t">Grátis, R$ 0</p>
+      <p>1 busca por dia, 30 mensagens da IA, envio manual.</p>
     </div>
-  </div>
-  <p class="etiqueta">prospect. as linhas de instalação.</p>
-  <p class="frase">Instalar é <span class="k">uma linha.</span><br>Uma pro app, outra pro terminal.</p>
-</section>
+  </section>
 
-<!-- 09 os planos -->
-<section class="slide" id="s09">
-  <img class="caule esq" src="telas/caule-esq.png" alt="">
-  <img class="caule dir" src="telas/caule-dir.png" alt="">
-  <div class="moldura">
-    <div class="noite">
-      <p class="olho">os planos</p>
-      <div class="plano">
-        <h3>Grátis</h3>
-        <span class="valor">R$ 0</span>
-        <p>1 busca por dia, 30 mensagens da IA, envio manual.</p>
-      </div>
-      <div class="plano">
-        <h3>No seu computador</h3>
-        <span class="valor">R$ 49<small>/mês</small></span>
-        <p>Modo autônomo, com a IA da obliq incluída: até 1.000&nbsp;leads por mês. Agentes e WhatsApps no seu PC, quantos quiser. <span class="dim" style="display:block">Prefere a sua IA? Use o Codex ou a sua chave.</span></p>
-      </div>
-      <div class="anual"><b>Anual: 10× o mensal.</b><span>dois meses de graça.</span></div>
+  <!-- 09 lançamento -->
+  <section class="s" id="s09" style="left:8640px">
+    <span class="aro"></span><span class="aro2"></span>
+    <p class="rot rot1">lançamento</p>
+    <p class="quem">os 10 primeiros:</p>
+    <p class="preco"><span class="t rs">R$</span><span class="t">39</span><span>/mês</span></p>
+    <p class="t sempre"><i>pra sempre.</i></p>
+    <p class="corpo sub noite-d">vale para o plano No seu computador.</p>
+  </section>
+
+  <!-- 10 em breve -->
+  <section class="s" id="s10" style="left:9720px">
+    <p class="rot rot1">em breve</p>
+    <p class="t titulo">o agente<br>na nuvem.</p>
+    <p class="corpo sub">autônomo, 24 horas, sem depender do seu computador ligado.</p>
+    <dl>
+      <div><dt>o primeiro</dt><dd>grátis</dd></div>
+      <div><dt>cada um a mais, com 1 WhatsApp</dt><dd>+ R$ 29/mês</dd></div>
+      <div><dt>e pra quem vende micro-SaaS</dt><dd>também</dd></div>
+    </dl>
+  </section>
+
+  <!-- 11 fecho -->
+  <section class="s" id="s11" style="left:10800px">
+    <img class="o" src="telas/o-de-flores.png" alt="">
+    <p class="corpo dentro-o">controle total das suas vendas,<br>com o seu <span class="k">agente pessoal.</span></p>
+    <div class="marca"><span class="obliq">obliq</span><span class="ponto-fixo" data-pose="parado" data-q="0" data-escala="2.7" style="margin-left:2px"></span></div>
+    <div class="testa">
+      <p class="corpo">testa agora, no plano <span class="k">grátis.</span></p>
+      <p class="onde">no PowerShell do Windows:</p>
+      <code>irm https://prospect.obliqstudios.com.br/instalar | iex</code>
+      <p class="link">ou no navegador: <b>prospect.obliqstudios.com.br</b></p>
     </div>
-  </div>
-  <p class="etiqueta">prospect. os planos.</p>
-  <p class="frase">A IA vem <span class="k">incluída.</span><br>Ou use a sua assinatura do Codex.</p>
-</section>
-
-<!-- 10 lançamento -->
-<section class="slide" id="s10">
-  <img class="caule esq" src="telas/caule-esq.png" alt="">
-  <img class="caule dir" src="telas/caule-dir.png" alt="">
-  <div class="moldura">
-    <div class="noite">
-      <div class="oferta"><div class="dentro">
-        <p class="olho">lançamento</p>
-        <div class="preco"><span class="rs">R$ 39</span><span class="mes">/mês</span></div>
-        <p class="sempre">pra sempre.</p>
-        <p class="quem">Para os 10 primeiros.<br><span>Vale para o plano No seu computador.</span></p>
-      </div></div>
-    </div>
-  </div>
-  <p class="etiqueta">prospect. o preço de lançamento.</p>
-  <p class="frase">Os 10 primeiros <span class="k">travam o preço.</span></p>
-</section>
-
-<!-- 11 em breve -->
-<section class="slide" id="s11">
-  <img class="caule esq" src="telas/caule-esq.png" alt="">
-  <img class="caule dir" src="telas/caule-dir.png" alt="">
-  <canvas class="lapis" data-desenho="botao"></canvas>
-  <div class="moldura">
-    <div class="breve">
-      <p class="olho">em breve</p>
-      <h3>O agente na nuvem.</h3>
-      <p class="sub">Autônomo, 24 horas, sem depender do seu computador ligado.</p>
-      <dl>
-        <div><dt>O primeiro</dt><dd>grátis</dd></div>
-        <div><dt>Cada um a mais, com 1 WhatsApp</dt><dd>+ R$ 29/mês</dd></div>
-        <div><dt>E pra quem vende micro-SaaS</dt><dd>também</dd></div>
-      </dl>
-    </div>
-  </div>
-  <p class="etiqueta">prospect. o que vem aí.</p>
-  <p class="frase">Em breve, um agente <span class="k">24 horas.</span><br>O primeiro é grátis.</p>
-</section>
-
-<!-- 12 fecho -->
-<section class="slide" id="s12">
-  <img class="o" src="telas/o-de-flores.png" alt="">
-  <p class="dentro-o">Controle total das suas vendas,<br>com o seu <span class="k">agente pessoal.</span></p>
-  <div class="marca"><span class="obliq">obliq</span><span class="ponto-fixo" data-pose="parado" data-q="0" data-escala="2.7"></span></div>
-  <div class="testa">
-    <p class="chamada">Testa agora, no plano <span class="k">grátis.</span></p>
-    <p class="onde">no PowerShell do Windows:</p>
-    <code>irm https://prospect.obliqstudios.com.br/instalar | iex</code>
-    <p class="link">ou no navegador: <b>prospect.obliqstudios.com.br</b></p>
-  </div>
-</section>
+  </section>
+</div>
 
 <script src="lib/ponto.js"></script>
 <script src="lib/lapis.js"></script>
 <script>
-// um slide só com ?s=NN
-const so = new URLSearchParams(location.search).get('s');
-if (so) { document.body.classList.add('um'); document.getElementById('s' + so.padStart(2, '0'))?.classList.add('ativo'); }
+const Z = Number(new URLSearchParams(location.search).get('z')) || 1;
+if (Z !== 1) document.body.style.zoom = Z;
 
 // o Ponto parado numa pose: o SVG vem do próprio ponto.js (as mesmas poses do app)
 document.querySelectorAll('.ponto-fixo').forEach((el) => {
@@ -433,46 +384,86 @@ document.querySelectorAll('.ponto-fixo').forEach((el) => {
   el.innerHTML = `<svg viewBox="0 0 24 16" width="${24 * e}" height="${16 * e}" aria-hidden="true">${q}</svg>`;
 });
 
-// a frase na linha de diário: a linha de base da primeira linha cai em y 1115
-function assentaFrase(el, base) {
-  const m = document.createElement('span');
-  m.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline';
-  el.prepend(m);
-  const slide = el.closest('.slide').getBoundingClientRect();
-  const y = m.getBoundingClientRect().top - slide.top;
-  m.remove();
-  el.style.top = (parseFloat(getComputedStyle(el).top) + base - y) + 'px';
+const LARG = 11880, ALT = 1350, ESC = 1.5;
+const NOITES = [[6480, 7560], [8640, 9720]];
+
+// o caminho do caule: corre na faixa de baixo (y 1250 a 1310), da capa ao fecho
+const TRILHA = [];
+for (let x = 60; x <= 11760; x += 30) {
+  const y = 1266 + Math.sin(x * 0.0042 + 0.6) * 24 + Math.sin(x * 0.0013 + 1.9) * 14;
+  TRILHA.push([x, y]);
 }
 
-// o lápis: o motor da casa (lapis.js), semente fixa, rodar de novo sai igual
-const DESENHOS = {
-  // a seta de "arrasta pro lado.", curta, saindo do texto para a direita
-  'seta-capa': (ctx) => {
-    const r = stream(SEED * 7 + 1);
-    seta(ctx, [[862, 1250], [884, 1246], [906, 1247], [934, 1250]], { w: 2.1, color: TINTA, rng: r, cabeca: 11 });
-  },
-  // o botão fechado e sem cor no alto do caule direito: o que ainda está chegando (§5e)
-  'botao': (ctx) => {
-    const r = stream(SEED * 7 + 2);
-    const x = 1004, y = 300;
-    wob(ctx, [[x - 6, y + 44], [x - 3, y + 26], [x, y + 8]], { w: 1.4, color: CAULE, rng: r, alpha: 0.7, amp: 0.3, noDust: true });
-    const b = blob(r, x, y - 6, 9, 15);
-    lavagem(ctx, b, SALVIA, 2, 0.18);
-    wob(ctx, b.concat([b[0]]), { w: 1.1, color: mistura(OLIVA, TINTA, 0.3), rng: r, alpha: 0.6, amp: 0.3, noDust: true });
-    for (const sd of [-1, 1]) folhaPintada(ctx, r, x, y + 6, -Math.PI / 2 + sd * 0.5, 16, SALVIA, OLIVA);
-  },
-};
-function desenhaLapis() {
-  document.querySelectorAll('canvas.lapis').forEach((c) => {
-    c.width = 1080 * 2; c.height = 1350 * 2;
+function caule(ctx, r, cor, folhas) {
+  wob(ctx, TRILHA, { w: 3, color: cor, rng: r, alpha: 0.72, amp: 0.9, noDust: true });
+  if (!folhas) return;
+  const [ux, uy] = TRILHA[TRILHA.length - 1], fim = [];
+  for (let t = 0; t < 2.4 * Math.PI; t += 0.3) fim.push([ux + 10 + Math.cos(t - Math.PI) * (26 - t * 3.2) + 26, uy - Math.sin(t - Math.PI) * (26 - t * 3.2)]);
+  wob(ctx, [[ux, uy], ...fim], { w: 1.6, color: cor, rng: r, alpha: 0.65, amp: 0.4, noDust: true });
+  for (let i = 2; i < TRILHA.length - 2; i += 2) {
+    const [x, y] = TRILHA[i];
+    const lado = (i / 2) % 2 ? 1 : -1;
+    const ang = -Math.PI / 2 + lado * rd(r, 0.55, 1.25) + rd(r, -0.25, 0.25);
+    if (ch(r, 0.9)) folhaPintada(ctx, r, x, y, ang, rd(r, 22, 36), SALVIA, OLIVA);
+    // de vez em quando uma gavinha enrolada, que é o que faz o traço parecer planta
+    if (ch(r, 0.12)) { const g = []; for (let t = 0; t < 1.6 * Math.PI; t += 0.35) g.push([x + 6 + Math.cos(t) * (14 - t * 2.6), y - 10 - Math.sin(t) * (14 - t * 2.6) - t * 4]); wob(ctx, [[x, y], ...g], { w: 1, color: cor, rng: r, alpha: 0.6, amp: 0.3, noDust: true }); }
+  }
+}
+
+function desenhaCaule() {
+  const c = document.getElementById('caule');
+  c.width = LARG * ESC; c.height = ALT * ESC;
+  const ctx = c.getContext('2d'); ctx.scale(ESC, ESC);
+  // no papel: o caule verde de folhas pintadas; na noite: só o traço, em papel apagado
+  ctx.save(); ctx.beginPath();
+  let x0 = 0; for (const [a, b] of NOITES) { ctx.rect(x0, 0, a - x0, ALT); x0 = b; } ctx.rect(x0, 0, LARG - x0, ALT);
+  ctx.clip(); caule(ctx, stream(SEED * 11 + 1), CAULE, true);
+  // slide 10: um ramo sobe pela margem direita e acaba num botão fechado, sem cor (o que vem aí, §5e)
+  const r = stream(SEED * 11 + 5);
+  const bx = 9720 + 1030, ramo = [];
+  for (let y = 1268; y >= 250; y -= 24) ramo.push([bx + Math.sin(y * 0.012) * 7, y]);
+  wob(ctx, ramo, { w: 1.8, color: CAULE, rng: r, alpha: 0.65, amp: 0.6, noDust: true });
+  for (let k = 3; k < ramo.length - 3; k += 4) folhaPintada(ctx, r, ramo[k][0], ramo[k][1], -Math.PI / 2 + (k % 8 ? 0.9 : -0.9), rd(r, 14, 20), SALVIA, OLIVA);
+  const [tx, ty] = ramo[ramo.length - 1];
+  const b = blob(r, tx, ty - 16, 10, 18);
+  lavagem(ctx, b, SALVIA, 2, 0.16);
+  wob(ctx, b.concat([b[0]]), { w: 1.2, color: mistura(OLIVA, TINTA, 0.3), rng: r, alpha: 0.65, amp: 0.3, noDust: true });
+  for (const sd of [-1, 1]) folhaPintada(ctx, r, tx, ty, -Math.PI / 2 + sd * 0.55, 18, SALVIA, OLIVA);
+  ctx.restore();
+  ctx.save(); ctx.beginPath(); for (const [a, bb] of NOITES) ctx.rect(a, 0, bb - a, ALT); ctx.clip();
+  caule(ctx, stream(SEED * 11 + 1), NOITE_DIM, false);
+  ctx.restore();
+
+  // a seta de "arrasta.", a lápis, cruzando para o slide 2
+  seta(ctx, [[972, 1178], [1000, 1174], [1030, 1177], [1062, 1181]], { w: 2.1, color: TINTA, rng: stream(SEED * 11 + 2), cabeca: 12 });
+
+  // slide 03: a seta da nota até o 77
+  const s3 = 2160;
+  seta(ctx, [[s3 + 292, 1140], [s3 + 266, 1112], [s3 + 262, 1072]], { w: 1.8, color: TINTA2, rng: stream(SEED * 11 + 3), cabeca: 10 });
+
+  // slide 05: a linha do tempo, vertical; o vão tracejado é o tempo em que ninguém respondeu
+  const s5 = 4320, lx = s5 + 236;
+  const r5 = stream(SEED * 11 + 4);
+  wob(ctx, [[lx, 430], [lx, 820]], { w: 1.8, color: TINTA, rng: r5, alpha: 0.8, amp: 0.8, noDust: true });
+  wob(ctx, [[lx, 830], [lx, 1030]], { w: 1.6, color: TINTA2, rng: r5, alpha: 0.7, amp: 0.8, gap: 0.45, noDust: true });
+  wob(ctx, [[lx, 1100], [lx, 1150]], { w: 1.8, color: TINTA, rng: r5, alpha: 0.8, amp: 0.8, noDust: true });
+}
+
+// o círculo a lápis em volta do 91 (desenhado dentro do recorte, para girar junto)
+function desenhaCirculos() {
+  document.querySelectorAll('[data-lapis="circulo"]').forEach((el) => {
+    const w = el.offsetWidth, h = el.offsetHeight;
+    const c = document.createElement('canvas'); c.width = w * 2; c.height = h * 2; c.style.width = w + 'px'; c.style.height = h + 'px';
+    el.appendChild(c);
     const ctx = c.getContext('2d'); ctx.scale(2, 2);
-    DESENHOS[c.dataset.desenho]?.(ctx);
+    const k = 790 / 746, cx = 13 + 43 * k, cy = 7 + 62 * k;
+    wob(ctx, circ(cx, cy, 47, 44, 1.12, -2.2), { w: 2.4, color: TINTA, rng: stream(SEED * 13), alpha: 0.85, amp: 1.2, taper: 'out' });
   });
 }
 
 Promise.all([document.fonts.ready, ...[...document.images].map((i) => i.complete ? 0 : new Promise((ok) => { i.onload = i.onerror = ok; }))]).then(() => {
-  document.querySelectorAll('.frase').forEach((f) => assentaFrase(f, 1115));
-  desenhaLapis();
+  desenhaCaule();
+  desenhaCirculos();
   document.body.dataset.pronto = '1';
 });
 </script>

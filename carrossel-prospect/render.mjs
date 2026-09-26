@@ -1,4 +1,4 @@
-// render.mjs: fotografa cada slide do carrossel.html em png/NN.png (1080 x 1350) e monta a prancha
+// render.mjs: fotografa cada faixa de 1080 px da folha do carrossel.html em png/NN.png e monta a prancha
 // a 0,36 (o tamanho em que o feed é visto no celular).
 //
 // Uso: node render.mjs
@@ -20,15 +20,15 @@ fs.mkdirSync(saida, { recursive: true });
 // sem texto LCD: o antialiasing subpixel deixa franja colorida (azul e laranja) na borda das letras
 const args = ['--disable-lcd-text', '--font-render-hinting=none'];
 const browser = await pw.chromium.launch(process.env.EDGE ? { channel: 'msedge', args } : { args });
-// sem movimento: o Ponto fica na pose parada e nada anima
-const page = await browser.newPage({ viewport: { width: 1080, height: 1350 }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
+// a folha inteira numa janela só; cada slide é uma faixa de 1080 px dela
+const page = await browser.newPage({ viewport: { width: 11880, height: 1350 }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
 await page.goto(pathToFileURL(path.join(aqui, 'carrossel.html')).href);
 await page.waitForSelector('body[data-pronto="1"]');
 
-const ids = await page.$$eval('section.slide', (els) => els.map((e) => e.id));
-for (const id of ids) {
+const ids = await page.$$eval('section.s', (els) => els.map((e) => e.id));
+for (const [i, id] of ids.entries()) {
   const n = id.slice(1);
-  await page.locator('#' + id).screenshot({ path: path.join(saida, `${n}.png`) });
+  await page.screenshot({ path: path.join(saida, `${n}.png`), clip: { x: i * 1080, y: 0, width: 1080, height: 1350 } });
   console.log(`png/${n}.png`);
 }
 
