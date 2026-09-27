@@ -1,0 +1,134 @@
+{
+  "_comment": "Musical time is the source of truth. Every value below is in beats (120 BPM). The video (src/timeline.ts) and the soundtrack (audio/synth.py) both read this file, so picture and sound cannot drift apart.",
+  "fps": 60,
+  "bpm": 120,
+  "width": 1920,
+  "height": 1080,
+  "beats": 30,
+  "scenes": {
+    "ball": [
+      0,
+      6
+    ],
+    "morph": [
+      6,
+      10
+    ],
+    "three": [
+      10,
+      14
+    ],
+    "particles": [
+      14,
+      17
+    ],
+    "liquid": [
+      17,
+      20
+    ],
+    "grid": [
+      20,
+      24
+    ],
+    "logo": [
+      24,
+      30
+    ]
+  },
+  "labels": [
+    {
+      "at": 0,
+      "text": "Squash & Stretch"
+    },
+    {
+      "at": 3,
+      "text": "Kinetic Type"
+    },
+    {
+      "at": 6,
+      "text": "Shape Morphing"
+    },
+    {
+      "at": 10,
+      "text": "3D & Lighting"
+    },
+    {
+      "at": 14,
+      "text": "Particle Sim"
+    },
+    {
+      "at": 17,
+      "text": "Liquid FX"
+    },
+    {
+      "at": 20,
+      "text": "Systems & Loops"
+    },
+    {
+      "at": 24,
+      "text": "Identity"
+    }
+  ],
+  "cues": {
+    "ballImpacts": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "periodLand": 5,
+    "zoom": [
+      5.55,
+      6
+    ],
+    "drop": 6,
+    "morphs": [
+      7,
+      8,
+      9
+    ],
+    "wipes": [
+      8,
+      9
+    ],
+    "starSpin": 9.5,
+    "extrude": 10,
+    "slam": 11,
+    "pulses": [
+      12,
+      12.5,
+      13
+    ],
+    "liftoff": 13.1,
+    "burst": 14,
+    "condense": [
+      15.6,
+      16.87
+    ],
+    "liquid": 17,
+    "split": 17.5,
+    "orbit": 18,
+    "bounce": 18.5,
+    "merge": 19,
+    "pullout": [
+      20,
+      21.6
+    ],
+    "cellsIn": [
+      20.1,
+      21.7
+    ],
+    "collapse": [
+      23.33,
+      24
+    ],
+    "logoHit": 24,
+    "logoPeriod": 25,
+    "logoSettle": [
+      25.37,
+      25.6
+    ],
+    "tagline": 25.8,
+    "end": 30
+  }
+}

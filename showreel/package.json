@@ -1,0 +1,36 @@
+{
+  "name": "claude-motion-showreel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A 15-second motion design showreel, built in Remotion with a synthesized, frame-synced soundtrack.",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "audio": "python3 audio/synth.py",
+    "three-pass": "remotion render src/index.ts ThreePass public/three --sequence --frames=300-419 --image-format=png --image-sequence-pattern=\"f[frame].[ext]\"",
+    "picture": "remotion render src/index.ts Showreel out/picture.mp4 --muted --concurrency=4 --props='{\"threeCache\":true}'",
+    "render": "npm run picture && scripts/mux.sh && python3 scripts/sync_check.py out/showreel.mp4",
+    "render:live": "remotion render src/index.ts Showreel out/picture.mp4 --muted && scripts/mux.sh"
+  },
+  "dependencies": {
+    "@fontsource-variable/jetbrains-mono": "5.3.0",
+    "@fontsource-variable/roboto-flex": "5.3.0",
+    "@fontsource/instrument-serif": "5.3.0",
+    "@react-three/fiber": "9.8.1",
+    "@remotion/cli": "4.0.529",
+    "@remotion/fonts": "4.0.529",
+    "@remotion/layout-utils": "4.0.529",
+    "@remotion/noise": "4.0.529",
+    "@remotion/paths": "4.0.529",
+    "@remotion/three": "4.0.529",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "remotion": "4.0.529",
+    "simplex-noise": "4.0.1",
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/three": "0.186.0",
+    "typescript": "7.0.2"
+  }
+}
